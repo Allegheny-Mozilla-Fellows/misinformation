@@ -32,11 +32,15 @@ ui <- fluidPage(
                          selected = 1),
         ),
         
-        mainPanel(h2("Original article will be displayed here:"),
+        mainPanel(h2("Original article will be displayed here, we could also attach a specific article here if that's
+                     the route we want to follow:"),
+                  a('https://www.nature.com/articles/d41586-018-06215-5/'),
                   p('This is where the text of the original article will be displayed'),
                   br(),
                   h2("The newly changed article will be displayed here:"),
-                  p('This is where the text of the new article will be displayed'),
+                  p('This is where the text of the edited article will be displayed, I attached on the side to either
+                    bold the words and punctuation that were changed or list them so that the user can visually see
+                    the scope of what has changed.'),
                   br(),
                   )
     )
