@@ -23,10 +23,22 @@ ui <- fluidPage(
             sliderInput("slider", 
                         h3("# of Iterations to Complete"),
                         min = 5, max = 30, value = 10),
-            textOutput("selected_iterations")
+            textOutput("selected_iterations"),
+            radioButtons("changes_display", h3("Display the Changes Made in a List"),
+                         choices = list("Yes" = 1, "No" = 2),
+                                        selected = 1),
+            radioButtons("changes_bolded", h3("Bold the Changes Made in the New Article"),
+                         choices = list("Yes" = 1, "No" = 2), 
+                         selected = 1),
         ),
         
-        mainPanel(h2("Article will be displayed here"))
+        mainPanel(h2("Original article will be displayed here:"),
+                  p('This is where the text of the original article will be displayed'),
+                  br(),
+                  h2("The newly changed article will be displayed here:"),
+                  p('This is where the text of the new article will be displayed'),
+                  br(),
+                  )
     )
 )     
 
