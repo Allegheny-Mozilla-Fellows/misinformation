@@ -19,10 +19,10 @@ ui <- fluidPage(
     sidebarLayout(
         sidebarPanel(
             h2("Transformation Info:"),
-            fileInput("file", h3("CSV File Input")),
+            textInput("url", h3("Copy and Paste URL Here:"), value = "Enter URL...") ,
             sliderInput("slider", 
                         h3("# of Iterations to Complete"),
-                        min = 5, max = 30, value = 10),
+                        min = 5, max = 100, value = 10),
             textOutput("selected_iterations"),
             radioButtons("changes_display", h3("Display the Changes Made in a List"),
                          choices = list("Yes" = 1, "No" = 2),
