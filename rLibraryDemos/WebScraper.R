@@ -1,10 +1,12 @@
 # Some code bits were taken from https://www.youtube.com/watch?v=l37n_HDD1qs
 
-# Installing the rvest package
+# Installing the rvest and stringr package
 install.packages('rvest')
+install.packages("stringr")
 
 # Loading the rvest package
 library('rvest')
+library('stringr')
 library('purrr')
 library('robotstxt')
 library('xml2')
@@ -25,7 +27,9 @@ NYTwebpage <- read_html(url)
 
 NYTwebpage %>%
   html_nodes(".css-53u6y8 p") %>%
-  html_text()
+  html_text() %>%
+  str_split(' ') -> paragraphs_separated_by_word
+  # map_chr() to pull out specific elements by number
 
 # NYTwebpage %>%
 #   html_nodes(".css-158dogj p") %>%
