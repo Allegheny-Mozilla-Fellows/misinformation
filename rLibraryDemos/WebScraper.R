@@ -4,7 +4,7 @@
 install.packages('rvest')
 install.packages("stringr")
 
-# Loading the rvest package
+# Loading some useful packages
 library('rvest')
 library('stringr')
 library('purrr')
@@ -14,11 +14,18 @@ library('dplyr')
 
 # Check if we can scrape from this site, if TRUE we can, if FALSE we can't
 paths_allowed(
-  paths = c("https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html")
+  paths = c("insert url here")
 )
 
 # Specifying the url for desired website to be scraped
-url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
+# url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
+# url <- 'https://www.nytimes.com/2020/06/15/us/gay-transgender-workers-supreme-court.html'
+# url <- 'https://www.nytimes.com/2020/06/15/opinion/lgbt-supreme-court-ruling.html?action=click&module=Opinion&pgtype=Homepage'
+# url <- 'https://www.nytimes.com/2020/06/15/us/politics/supreme-court-lgbtq-rights.html?action=click&module=Top%20Stories&pgtype=Homepage'
+# url <- 'https://www.nytimes.com/2020/06/15/magazine/parenting-black-teens.html?action=click&module=Top%20Stories&pgtype=Homepage'
+# url <- 'https://www.nytimes.com/2020/06/15/technology/coronavirus-disinformation-russia-iowa-caucus.html'
+# url <- 'https://www.nytimes.com/2020/06/03/health/coronavirus-contact-tracing-apps.html'
+
 
 # Reading the HTML code from the website
 NYTwebpage <- read_html(url)
@@ -31,23 +38,4 @@ NYTwebpage %>%
   str_split(' ') -> paragraphs_separated_by_word
   # map_chr() to pull out specific elements by number
 
-# NYTwebpage %>%
-#   html_nodes(".css-158dogj p") %>%
-#   html_text()
-
-
-
-# Using CSS selectors to scrape the rankings section
-rank_data_html <- html_nodes(webpage,'.text-primary')
-
-# Converting the ranking data to text
-rank_data <- html_text(rank_data_html)
-
-# Let's have a look at the rankings
-head(rank_data)
-
-
-
-
-.text-primary
 
