@@ -49,10 +49,13 @@ spacy_parse(first_paragraph) # this worked!!!
 
 # prints each paragraph in the article
 # Ask OBC
-for (value in paragraphs) {
-  nam <- paste("p", value, sep = ".")
-  value <- assign(nam, 1:value)
-}
+p <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
+
+# StackOverflow says using assign() isn't a great practice in industry
+# for (value in seq_along(paragraphs)) {
+#   nam <- paste("p", value, sep = ".")
+#   value <- assign(nam, paragraphs[value])
+# }
 
 
 
