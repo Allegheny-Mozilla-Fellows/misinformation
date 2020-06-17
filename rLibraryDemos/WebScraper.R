@@ -35,29 +35,37 @@ paths_allowed(
 # Reading the HTML code from the website
 NYTwebpage <- read_html(url)
 
-# Test to pull out text from the article
-
+# Pull text from the html and separate each paragraph, or separate each paragraph by each word
 NYTwebpage %>%
   html_nodes(".css-53u6y8 p") %>%
-  html_text() -> paragraphs
-  # str_split(' ') -> paragraphs_separated_by_word
-  # map_chr() to pull out specific elements by number
+  html_text() %>% # -> paragraphs
+  str_split(' ') # -> paragraphs_separated_by_word
 
-# Trying to iterate through this first paragraph and then use spacyr methods
-paragraphs[1] -> first_paragraph
-spacy_parse(first_paragraph) # this worked!!!
+# Turn 'paragraphs' and '(paragraphs_separated_by_word' into list objects
+paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
+psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 
-# prints each paragraph in the article
-# Ask OBC
-p <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
-
-# StackOverflow says using assign() isn't a great practice in industry
-# for (value in seq_along(paragraphs)) {
-#   nam <- paste("p", value, sep = ".")
-#   value <- assign(nam, paragraphs[value])
+# spacy_parse(p$p1) # this worked!!!
+# for (i in paragraph_list){
+#   
 # }
 
+# useful for selecting only nouns
+spacy_parse("The cat in the hat ate green eggs and ham.", pos = TRUE) %>%
+  as.tokens(include_pos = "pos") %>%
+  tokens_select(pattern = c("*/NOUN"))
 
+# Randomly select a paragraph or randomly select a word from a paragraph?
+# spacy_parse doesn't work on lists
+spacy_parse(sample(psw_list, 1))
+# spacy_parse does work on one item in a list, like this:
+spacy_parse()
 
+spacy_parse(sample(psw_list$p1, 1), pos = TRUE, tag = TRUE)
+
+for (p in psw_list){
+ spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE) %>%
+    # code that randomly selects same POS word
+}
 
 
