@@ -46,49 +46,70 @@ paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 
 # useful for selecting words of specific POS, only works on 'paragraph_list' since it's not tokenized
-noun_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                as.tokens(include_pos = "pos") %>%
-                tokens_select(pattern = c("*/NOUN"))
 
-proper_noun_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                        as.tokens(include_pos = "pos") %>%
-                        tokens_select(pattern = c("*/PROPN"))
-
-adj_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                as.tokens(include_pos = "pos") %>%
-                tokens_select(pattern = c("*/ADJ"))
-
-verb_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                as.tokens(include_pos = "pos") %>%
-                tokens_select(pattern = c("*/VERB"))
-
-adverb_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                  as.tokens(include_pos = "pos") %>%
-                  tokens_select(pattern = c("*/ADV"))
-
-number_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                    as.tokens(include_pos = "pos") %>%
-                    tokens_select(pattern = c("*/NUM"))
-
-adposition_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
-                      as.tokens(include_pos = "pos") %>%
-                      tokens_select(pattern = c("*/ADP"))
-
-# TEST FUNCTION TO RANDOMLY SELECT ONE NOUN
-# ask OBC about writing this function
+# SELECT NOUN FUNCTION
 selectNoun <- function(num_of_nouns, string_to_parse){
-    nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
-                as.tokens(include_pos = "pos") %>%
-                tokens_select(pattern = c("*/NOUN"))
-    nouns <- str_split(nouns, "   ")
-    return(sample(nouns, num_of_nouns))
+  nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/NOUN"))
+  nouns <- str_split(nouns, "   ")
+  return(sample(nouns, num_of_nouns))
 }
 
-str_split(test, "     ") # splits the noun object in selectNoun into pieces
 
-parsedtxt <- spacy_parse(psw_list$p1, pos = TRUE)
-as.tokens(parsedtxt, include_pos = "pos")
+# SELECT PROPER NOUN FUNCTION
+selectProperNoun <- function(num_of_prnouns, string_to_parse){
+  proper_nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/PROPN"))
+  proper_nouns <- str_split(proper_nouns, "   ")
+  return(sample(proper_nouns, num_of_prnouns))
+}
 
+# SELECT ADJECTIVE FUNCTION
+selectAdj <- function(num_of_adjs, string_to_parse){
+  adjs <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/ADJ"))
+  adjs <- str_split(adjs, "   ")
+  return(sample(adjs, num_of_adjs))
+}
+
+# SELECT VERB FUNCTION
+selectVerb <- function(num_of_verbs, string_to_parse){
+  verbs <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/VERB"))
+  verbs <- str_split(verbs, "   ")
+  return(sample(verbs, num_of_verbs))
+}
+
+# SELECT ADVERB FUNCTION
+selectAdverbs <- function(num_of_adverbs, string_to_parse){
+  adverbs <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/ADV"))
+  adverbs <- str_split(adverbs, "   ")
+  return(sample(adverbs, num_of_adverbs))
+}
+
+# SELECT NUMBER FUNCTION 
+selectNumber <- function(num_of_numbers, string_to_parse){
+  numbers <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/NUM"))
+  numbers <- str_split(numbers, "   ")
+  return(sample(numbers, num_of_numbers))
+}
+
+# SELECT ADPOSITION FUNCTION
+selectAdpo <- function(num_of_adpos, string_to_parse){
+  adpos <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/ADP"))
+  adpos <- str_split(adpos, "   ")
+  return(sample(adpos, num_of_adpos))
+}
 
 # Randomly select a paragraph or randomly select a word from a paragraph?
 # spacy_parse doesn't work on lists
@@ -99,7 +120,7 @@ spacy_parse()
 spacy_parse(sample(psw_list$p1, 1), pos = TRUE, tag = TRUE)
 
 for (p in psw_list){
- spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE) %>%
+ spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)
     # code that randomly selects same POS word
 }
 
