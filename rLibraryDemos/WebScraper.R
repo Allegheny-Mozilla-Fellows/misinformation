@@ -111,13 +111,13 @@ selectAdpo <- function(num_of_adpos, string_to_parse){
   return(sample(adpos, num_of_adpos))
 }
 
-# Randomly select a paragraph or randomly select a word from a paragraph?
-# spacy_parse doesn't work on lists
-spacy_parse(sample(psw_list, 1))
-# spacy_parse does work on one item in a list, like this:
-spacy_parse()
 
-spacy_parse(sample(psw_list$p1, 1), pos = TRUE, tag = TRUE)
+# Steps from here: 1) Take in the total number of iterations from the shiny app widget, and evenly divide those among 
+# the total number of paragraphs in the article? Or make it top heavy like OBC mentioned, putting the majority of the
+# changes towards the beginning of the article. 2) Begin writing the algorithm that will randomly decide what types
+# of words to change (as in parts of speech) using the methods written above. 3) Find a library of words of the same
+# parts of speech, check Spacyr again, but I believe that feature may only be in Spacy. 3) Figure out how to pull in
+# a new word of the same parts of speech from that library and then replace the randomly selected word with the new one.
 
 for (p in psw_list){
  spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)
