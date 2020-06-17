@@ -45,15 +45,50 @@ NYTwebpage %>%
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 
-# spacy_parse(p$p1) # this worked!!!
-# for (i in paragraph_list){
-#   
-# }
+# useful for selecting words of specific POS, only works on 'paragraph_list' since it's not tokenized
+noun_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                as.tokens(include_pos = "pos") %>%
+                tokens_select(pattern = c("*/NOUN"))
 
-# useful for selecting only nouns
-spacy_parse("The cat in the hat ate green eggs and ham.", pos = TRUE) %>%
-  as.tokens(include_pos = "pos") %>%
-  tokens_select(pattern = c("*/NOUN"))
+proper_noun_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                        as.tokens(include_pos = "pos") %>%
+                        tokens_select(pattern = c("*/PROPN"))
+
+adj_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                as.tokens(include_pos = "pos") %>%
+                tokens_select(pattern = c("*/ADJ"))
+
+verb_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                as.tokens(include_pos = "pos") %>%
+                tokens_select(pattern = c("*/VERB"))
+
+adverb_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                  as.tokens(include_pos = "pos") %>%
+                  tokens_select(pattern = c("*/ADV"))
+
+number_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                    as.tokens(include_pos = "pos") %>%
+                    tokens_select(pattern = c("*/NUM"))
+
+adposition_parsed <- spacy_parse(paragraph_list$p1, pos = TRUE) %>%
+                      as.tokens(include_pos = "pos") %>%
+                      tokens_select(pattern = c("*/ADP"))
+
+# TEST FUNCTION TO RANDOMLY SELECT ONE NOUN
+# ask OBC about writing this function
+selectNoun <- function(num_of_nouns, string_to_parse){
+    nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
+                as.tokens(include_pos = "pos") %>%
+                tokens_select(pattern = c("*/NOUN"))
+    nouns <- str_split(nouns, "   ")
+    return(sample(nouns, num_of_nouns))
+}
+
+str_split(test, "     ") # splits the noun object in selectNoun into pieces
+
+parsedtxt <- spacy_parse(psw_list$p1, pos = TRUE)
+as.tokens(parsedtxt, include_pos = "pos")
+
 
 # Randomly select a paragraph or randomly select a word from a paragraph?
 # spacy_parse doesn't work on lists
