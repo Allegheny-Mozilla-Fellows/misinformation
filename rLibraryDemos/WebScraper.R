@@ -8,6 +8,7 @@ install.packages("spacyr")
 
 # Loading some useful packages
 library('rvest')
+library('readtext')
 library('stringr')
 library('spacyr')
 library('purrr')
@@ -123,5 +124,21 @@ for (p in psw_list){
  spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)
     # code that randomly selects same POS word
 }
+
+# Replacing words in either paragraphs_list or psw_list: how to? Maybe write a function
+random_psw <- setNames(sample(psw_list), paste0("p", seq_along(psw_list))) # randomly reorders and renames 'psw_list'
+selectNoun(2, random_psw$p1)
+# found this randomWords() function from the OpenRepGrid package but you need to download a specific package outside
+# of R which probably isn't super viable.
+
+# reading in massive csv of words
+# randomWordData <- read.csv(file = '/Users/dcasey/Desktop/Summer2020/misinformation/data/randomWords.csv', sep = ',')
+# randomWordData <- setNames(as.list(randomWordData), paste0("p", seq_along(randomWordData)))
+# rwDataList <- as.list(randomWordData)
+# rwDataChar <- as.character(rwDataList)
+#     seq_along(rwDataList)
+# spacy_parse(rwDataList)
+
+# Trying to use rcorpora
 
 
