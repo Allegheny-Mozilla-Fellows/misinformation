@@ -2,6 +2,7 @@
 
 # Installing the rvest and stringr package
 install.packages('rvest')
+install.packages("rcorpora")
 install.packages("stringr")
 install.packages("quanteda")
 install.packages("spacyr")
@@ -15,7 +16,8 @@ library('purrr')
 library('robotstxt')
 library('xml2')
 library('dplyr')
-library(quanteda)
+library('quanteda')
+library('rcorpora')
 
 # Check if we can scrape from this site, if TRUE we can, if FALSE we can't
 paths_allowed(
@@ -39,12 +41,13 @@ NYTwebpage <- read_html(url)
 # Pull text from the html and separate each paragraph, or separate each paragraph by each word
 NYTwebpage %>%
   html_nodes(".css-53u6y8 p") %>%
-  html_text() %>% # -> paragraphs
-  str_split(' ') # -> paragraphs_separated_by_word
+  html_text() %>% # -> paragraphs # chr value
+  str_split(' ') # -> paragraphs_separated_by_word # list
 
 # Turn 'paragraphs' and '(paragraphs_separated_by_word' into list objects
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
+
 
 # useful for selecting words of specific POS, only works on 'paragraph_list' since it's not tokenized
 
@@ -104,6 +107,7 @@ selectNumber <- function(num_of_numbers, string_to_parse){
 }
 
 # SELECT ADPOSITION FUNCTION
+# Might delete this, probably not necessary
 selectAdpo <- function(num_of_adpos, string_to_parse){
   adpos <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
@@ -120,25 +124,38 @@ selectAdpo <- function(num_of_adpos, string_to_parse){
 # parts of speech, check Spacyr again, but I believe that feature may only be in Spacy. 3) Figure out how to pull in
 # a new word of the same parts of speech from that library and then replace the randomly selected word with the new one.
 
+# Pull a nested list of adjectives from rcopora and convert the adjectives to their own list.
+adjs <- corpora('words/adjs')
+adjs_list <- setNames(as.list(adjs$adjs), paste0("adj", seq_along(adjs$adjs))) # WORKED!!!!!
+
+# Pull a nested list of adverbs from rcopora and comvert the adverbs to their own list.
+adverbs <- corpora('words/adverbs')
+adverbs_list <- setNames(as.list(adverbs$adverbs), paste0("adv", seq_along(adverbs$adverbs)))
+
+# Pull a nested list of nouns from rcopora and convert the nouns to their own list.
+nouns <- corpora('words/nouns')
+nouns_list <- setNames(as.list(nouns$nouns), paste0("n", seq_along(nouns$nouns)))
+
+
+
+# code that randomly selects same POS word
 for (p in psw_list){
  spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)
-    # code that randomly selects same POS word
+    
 }
 
 # Replacing words in either paragraphs_list or psw_list: how to? Maybe write a function
-random_psw <- setNames(sample(psw_list), paste0("p", seq_along(psw_list))) # randomly reorders and renames 'psw_list'
-selectNoun(2, random_psw$p1)
-# found this randomWords() function from the OpenRepGrid package but you need to download a specific package outside
-# of R which probably isn't super viable.
 
-# reading in massive csv of words
-# randomWordData <- read.csv(file = '/Users/dcasey/Desktop/Summer2020/misinformation/data/randomWords.csv', sep = ',')
-# randomWordData <- setNames(as.list(randomWordData), paste0("p", seq_along(randomWordData)))
-# rwDataList <- as.list(randomWordData)
-# rwDataChar <- as.character(rwDataList)
-#     seq_along(rwDataList)
-# spacy_parse(rwDataList)
 
-# Trying to use rcorpora
+
+
+
+
+
+
+
+
+
+
 
 
