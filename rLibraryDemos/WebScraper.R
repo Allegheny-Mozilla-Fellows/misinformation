@@ -136,12 +136,32 @@ adverbs_list <- setNames(as.list(adverbs$adverbs), paste0("adv", seq_along(adver
 nouns <- corpora('words/nouns')
 nouns_list <- setNames(as.list(nouns$nouns), paste0("n", seq_along(nouns$nouns)))
 
+# Need to randomly select a word from psw_list, find the pos of the word, randomly find a word of the same part of 
+# speech in one of the other lists, pull that word in and replace it with the original one.
+
+sample(psw_list, 1) # randomly selects a paragraph from psw_list
+for (i in psw_list){ # goes through all paragraphs
+  print(spacy_parse(sample(i, 1))) # randomly selects a word and parses it
+}
+
+# trying to pull a word of specific pos
+spacy_parse(i, pos = TRUE) %>%
+  as.tokens(include_pos = "pos") %>%
+  tokens_select(pattern = c("*/NOUN"))
+
+# this for loop spacy parses each word in the entire article
+for (i in psw_list){
+  print(spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)) # randomly
+  for (j in i){
+    # something
+  }
+}
+
 
 
 # code that randomly selects same POS word
 for (p in psw_list){
- spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)
-    
+  print(spacy_parse(sample(p, 1), lemma = FALSE, pos = TRUE, tag = FALSE))
 }
 
 # Replacing words in either paragraphs_list or psw_list: how to? Maybe write a function
