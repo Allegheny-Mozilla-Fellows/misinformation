@@ -169,18 +169,33 @@ for (i in psw_list){
 
 # Algorithm thar decides which words to change, use nouns, adjs, and adverbs at the moment.
 
-
 # Sub Function testing
-x <- "r tutorial"
-y <- sub("r ","HTML ", x)
-y
 
 # This works, warning message pops up though
+  # One for each part of speech? Need an if statement
+
+# This works
+# Function to replace a chosen noun 
+replaceNoun <- function(old_noun){
+  new_noun <- gsub(old_noun, old_noun, sample(nouns, 1))
+  return(new_noun)
+}
+
+replaceAdjs <- function(old_adj){
+  new_adj <- gsub(old_adj, old_adj, sample(adjs, 1))
+  return(new_adj)
+}
+
+q <- selectNoun(1, psw_list$p1)
+r <- gsub(q, q, sample(nouns, 1))
+q <- gsub(q, q, sample(nouns, 1))
+
+if ()
 x <- sample(psw_list$p1, 1)
 x <- gsub(x, psw_list$p1, sample(adjs, 1))
 
 
-y <- str_replace(x, psw_list$p1, sample(adjs, 1))
+
 
 
 
