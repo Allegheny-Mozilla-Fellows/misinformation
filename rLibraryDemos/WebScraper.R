@@ -9,7 +9,7 @@ install.packages("spacyr")
 
 # Loading some useful packages
 library('rvest')
-library('readtext')
+# library('readtext')
 library('stringr')
 library('spacyr')
 library('purrr')
@@ -46,8 +46,7 @@ NYTwebpage %>%
 
 # Turn 'paragraphs' and '(paragraphs_separated_by_word' into list objects
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
-psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
-
+psw_list <- paragraphs_separated_by_word
 
 # useful for selecting words of specific POS, only works on 'paragraph_list' since it's not tokenized
 
@@ -116,32 +115,33 @@ selectAdpo <- function(num_of_adpos, string_to_parse){
   return(sample(adpos, num_of_adpos))
 }
 
-
-# Steps from here: 1) Take in the total number of iterations from the shiny app widget, and evenly divide those among 
-# the total number of paragraphs in the article? Or make it top heavy like OBC mentioned, putting the majority of the
-# changes towards the beginning of the article. 2) Begin writing the algorithm that will randomly decide what types
-# of words to change (as in parts of speech) using the methods written above. 3) Find a library of words of the same
-# parts of speech, check Spacyr again, but I believe that feature may only be in Spacy. 3) Figure out how to pull in
-# a new word of the same parts of speech from that library and then replace the randomly selected word with the new one.
-
 # Pull a nested list of adjectives from rcopora and convert the adjectives to their own list.
 adjs <- corpora('words/adjs')
-adjs_list <- setNames(as.list(adjs$adjs), paste0("adj", seq_along(adjs$adjs))) # WORKED!!!!!
+adjs <- setNames(as.list(adjs$adjs), paste0("adj", seq_along(adjs$adjs))) # WORKED!!!!!
 
 # Pull a nested list of adverbs from rcopora and comvert the adverbs to their own list.
 adverbs <- corpora('words/adverbs')
-adverbs_list <- setNames(as.list(adverbs$adverbs), paste0("adv", seq_along(adverbs$adverbs)))
+adverbs <- setNames(as.list(adverbs$adverbs), paste0("adv", seq_along(adverbs$adverbs)))
 
 # Pull a nested list of nouns from rcopora and convert the nouns to their own list.
 nouns <- corpora('words/nouns')
-nouns_list <- setNames(as.list(nouns$nouns), paste0("n", seq_along(nouns$nouns)))
+nouns <- setNames(as.list(nouns$nouns), paste0("n", seq_along(nouns$nouns)))
 
-# Need to randomly select a word from psw_list, find the pos of the word, randomly find a word of the same part of 
-# speech in one of the other lists, pull that word in and replace it with the original one.
+# Need to randomly select a word from psw_list (based on user input divided by number of paragraphs?), find the
+# pos of the word, randomly find a word of the same part of speech in one of the other lists, pull that word in
+# and replace it with the original one.
 
 sample(psw_list, 1) # randomly selects a paragraph from psw_list
 for (i in psw_list){ # goes through all paragraphs
   print(spacy_parse(sample(i, 1))) # randomly selects a word and parses it
+}
+
+# code that randomly selects same POS word
+for (p in psw_list){
+  for (i in p){
+    spacy_parse(i, lemma = FALSE, pos = TRUE, tag = FALSE, entity = FALSE) #%>%
+      
+  }
 }
 
 # trying to pull a word of specific pos
@@ -150,21 +150,37 @@ spacy_parse(i, pos = TRUE) %>%
   tokens_select(pattern = c("*/NOUN"))
 
 # this for loop spacy parses each word in the entire article
+
 for (i in psw_list){
-  print(spacy_parse(sample(p, 1), pos = TRUE, tag = TRUE)) # randomly
-  for (j in i){
-    # something
-  }
-}
-
-
-
-# code that randomly selects same POS word
-for (p in psw_list){
-  print(spacy_parse(sample(p, 1), lemma = FALSE, pos = TRUE, tag = FALSE))
+  print(spacy_parse(i, pos = TRUE, tag = TRUE) %>%
+          as.tokens(include_pos = "pos") %>%
+          tokens_select(pattern = c("*/NOUN",))
+          tokens_remove(pattern = c('*/PROPN', '*/ADP', '*/NUM', '*/ADV', '*/',)))
 }
 
 # Replacing words in either paragraphs_list or psw_list: how to? Maybe write a function
+
+# Steps from here: 1) Take in the total number of iterations from the shiny app widget, and evenly divide those among 
+# the total number of paragraphs in the article? Or make it top heavy like OBC mentioned, putting the majority of the
+# changes towards the beginning of the article. 2) Begin writing the algorithm that will randomly decide what types
+# of words to change (as in parts of speech) using the methods written above. 3) Find a library of words of the same
+# parts of speech, check Spacyr again, but I believe that feature may only be in Spacy. 3) Figure out how to pull in
+# a new word of the same parts of speech from that library and then replace the randomly selected word with the new one.
+
+# Algorithm thar decides which words to change, use nouns, adjs, and adverbs at the moment.
+
+
+# Sub Function testing
+x <- "r tutorial"
+y <- sub("r ","HTML ", x)
+y
+
+# This works, warning message pops up though
+x <- sample(psw_list$p1, 1)
+x <- gsub(x, psw_list$p1, sample(adjs, 1))
+
+
+y <- str_replace(x, psw_list$p1, sample(adjs, 1))
 
 
 
