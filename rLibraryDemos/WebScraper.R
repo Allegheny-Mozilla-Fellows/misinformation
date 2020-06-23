@@ -3,30 +3,25 @@
 # Installing the rvest and stringr package
 install.packages('rvest')
 install.packages("rcorpora")
+install.packages("radlibs")
 install.packages("stringr")
 install.packages("quanteda")
 install.packages("spacyr")
 
 # Loading some useful packages
 library('rvest')
-# library('readtext')
 library('stringr')
 library('spacyr')
 library('purrr')
-library('robotstxt')
 library('xml2')
 library('dplyr')
 library('quanteda')
 library('rcorpora')
-
-# Check if we can scrape from this site, if TRUE we can, if FALSE we can't
-paths_allowed(
-  paths = c("insert url here")
-)
+library('radlibs')
 
 # Specifying the url for desired website to be scraped
 # All NYT url's seem to work so far
-# url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
+url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
 # url <- 'https://www.nytimes.com/2020/06/15/us/gay-transgender-workers-supreme-court.html'
 # url <- 'https://www.nytimes.com/2020/06/15/opinion/lgbt-supreme-court-ruling.html?action=click&module=Opinion&pgtype=Homepage'
 # url <- 'https://www.nytimes.com/2020/06/15/us/politics/supreme-court-lgbtq-rights.html?action=click&module=Top%20Stories&pgtype=Homepage'
@@ -38,15 +33,21 @@ paths_allowed(
 # Reading the HTML code from the website
 NYTwebpage <- read_html(url)
 
-# Pull text from the html and separate each paragraph, or separate each paragraph by each word
+# Pull text from the html and separate each paragraph
 NYTwebpage %>%
   html_nodes(".css-53u6y8 p") %>%
-  html_text() %>% # -> paragraphs # chr value
-  str_split(' ') # -> paragraphs_separated_by_word # list
+  html_text() -> paragraphs 
 
-# Turn 'paragraphs' and '(paragraphs_separated_by_word' into list objects
+# Pull text from html and separate each paragraph by each word
+NYTwebpage %>%
+  html_nodes(".css-53u6y8 p") %>%
+  html_text() %>% 
+  str_split(' ') -> paragraphs_separated_by_word
+
+# Turn 'paragraphs' and 'paragraphs_separated_by_word' into list objects, change naming conventions
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
-psw_list <- paragraphs_separated_by_word
+psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
+rm(paragraphs_separated_by_word)
 
 # useful for selecting words of specific POS, only works on 'paragraph_list' since it's not tokenized
 
@@ -58,7 +59,6 @@ selectNoun <- function(num_of_nouns, string_to_parse){
   nouns <- str_split(nouns, "   ")
   return(sample(nouns, num_of_nouns))
 }
-
 
 # SELECT PROPER NOUN FUNCTION
 selectProperNoun <- function(num_of_prnouns, string_to_parse){
@@ -127,38 +127,21 @@ adverbs <- setNames(as.list(adverbs$adverbs), paste0("adv", seq_along(adverbs$ad
 nouns <- corpora('words/nouns')
 nouns <- setNames(as.list(nouns$nouns), paste0("n", seq_along(nouns$nouns)))
 
+# Pull a dataframe of proper nouns and save them as a list 
+data("proper_nouns")
+proper_nouns <- force(proper_nouns)
+proper_nouns <- setNames(as.list(proper_nouns$word), paste0("pr", seq_along(proper_nouns$word)))
+
+# Pull a dataframe of past and present verbs and save them as lists
+verbs <- corpora('words/verbs')
+verbs <- verbs$verbs
+verbs_present <- setNames(as.list(verbs$present), paste0("v", seq_along(verbs$present)))
+verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
+
+
 # Need to randomly select a word from psw_list (based on user input divided by number of paragraphs?), find the
 # pos of the word, randomly find a word of the same part of speech in one of the other lists, pull that word in
 # and replace it with the original one.
-
-sample(psw_list, 1) # randomly selects a paragraph from psw_list
-for (i in psw_list){ # goes through all paragraphs
-  print(spacy_parse(sample(i, 1))) # randomly selects a word and parses it
-}
-
-# code that randomly selects same POS word
-for (p in psw_list){
-  for (i in p){
-    spacy_parse(i, lemma = FALSE, pos = TRUE, tag = FALSE, entity = FALSE) #%>%
-      
-  }
-}
-
-# trying to pull a word of specific pos
-spacy_parse(i, pos = TRUE) %>%
-  as.tokens(include_pos = "pos") %>%
-  tokens_select(pattern = c("*/NOUN"))
-
-# this for loop spacy parses each word in the entire article
-
-for (i in psw_list){
-  print(spacy_parse(i, pos = TRUE, tag = TRUE) %>%
-          as.tokens(include_pos = "pos") %>%
-          tokens_select(pattern = c("*/NOUN",))
-          tokens_remove(pattern = c('*/PROPN', '*/ADP', '*/NUM', '*/ADV', '*/',)))
-}
-
-# Replacing words in either paragraphs_list or psw_list: how to? Maybe write a function
 
 # Steps from here: 1) Take in the total number of iterations from the shiny app widget, and evenly divide those among 
 # the total number of paragraphs in the article? Or make it top heavy like OBC mentioned, putting the majority of the
@@ -169,30 +152,76 @@ for (i in psw_list){
 
 # Algorithm thar decides which words to change, use nouns, adjs, and adverbs at the moment.
 
-# Sub Function testing
+# select random noun from 'nouns' and replace it with the old and save it in the paragraph
+psw_list$p1[WORD] <- str_replace(psw_list$p1[WORD], psw_list$p1[WORD], sample(1, nouns)) # works
+replaceNoun(psw_list$p1[24])
 
-# This works, warning message pops up though
-  # One for each part of speech? Need an if statement
-
-# This works
 # Function to replace a chosen noun 
-replaceNoun <- function(old_noun){
-  new_noun <- gsub(old_noun, old_noun, sample(nouns, 1))
-  return(new_noun)
+replaceNoun <- function(noun){
+  random_noun <- toString(sample(nouns, 1))
+  noun <- str_replace(noun, noun, random_noun)
+  return(noun)
 }
 
-replaceAdjs <- function(old_adj){
-  new_adj <- gsub(old_adj, old_adj, sample(adjs, 1))
-  return(new_adj)
+# Function to replace a chosen adjective
+replaceAdj <- function(adj){ # 'adj' should like 'psw_list$p1[1]'
+  random_adj <- toString(sample(adjs, 1))
+  adj <- str_replace(adj, adj, random_adj)
+  return(adj)
+} #doesn't save the new adj in place of the old one, have to do so explicitly afterwards
+
+# Function to replace a chosen adverb
+replaceAdverb <- function(adv){ # adj' should like 'psw_list$p1[1]'
+  random_adv <- toString(sample(adverbs, 1))
+  adv <- str_replace(adv, adv, random_adv)
+  return(adv)
 }
 
-q <- selectNoun(1, psw_list$p1)
-r <- gsub(q, q, sample(nouns, 1))
-q <- gsub(q, q, sample(nouns, 1))
+# Function to replace a chosen proper noun
+replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
+  random_prpnoun <- toString(sample(adjs, 1))
+  prpnoun <- str_replace(prpnoun, prpnoun, random_prpnoun)
+  return(prpnoun)
+}
 
-if ()
-x <- sample(psw_list$p1, 1)
-x <- gsub(x, psw_list$p1, sample(adjs, 1))
+# 'iterations' will be read in from the slider in shiny
+# go through psw_list and select a word to parse
+
+# Loop for the pseudocode to go through
+iterations == 7
+for (i in iterations){ # for a specific change in the total amount of changes
+  # select a random word and find the pos using 'pos' in spacy_parsed
+  parsed <- spacy_parse(sample(psw_list$p1, 1)) 
+  pos <- parsed[1,6] 
+  # coditional logic below
+  # make sure the word is changed and saved in the logic
+  # go to the next word
+}
+
+# Pseudocode for logical flow of replacement of one word
+# Will this be inside a for loop?
+if (pos == NOUN){
+  n <- selectNoun(1, psw_list$p1)
+  n <- replaceNoun(n)
+} else if (pos == ADJ){
+  n <- selectAdj(1, psw_list$p1)
+  n <- replaceAdj(n)
+} else if (pos == ADV){
+  n <- selectAdverbs(1, psw_list$p1)
+  n <- replaceAdverb(n)
+} else if (pos == NUM){
+  n <- selectNumber(1, psw_list$p1)
+  n <- replaceNumber(n) # need to write this function
+} else if (pos == PROPN){
+  n <- selectProperNoun(1, psw_list$p1)
+  n <- replaceProperNoun(n) # need to write this function
+} else if (pos == VERB){
+  # this is the tricky part
+} else if (pos == PUNCT){
+  # add one for punctuation
+} else if( word.pos == somethingelse) # or just else?
+  # pick another word but dont increase the i?
+
 
 
 
