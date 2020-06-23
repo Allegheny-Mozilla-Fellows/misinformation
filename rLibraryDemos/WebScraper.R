@@ -7,6 +7,7 @@ install.packages("radlibs")
 install.packages("stringr")
 install.packages("quanteda")
 install.packages("spacyr")
+install.packages("rlist")
 
 # Loading some useful packages
 library('rvest')
@@ -18,6 +19,7 @@ library('dplyr')
 library('quanteda')
 library('rcorpora')
 library('radlibs')
+library('rlist')
 
 # Specifying the url for desired website to be scraped
 # All NYT url's seem to work so far
@@ -138,7 +140,6 @@ verbs <- verbs$verbs
 verbs_present <- setNames(as.list(verbs$present), paste0("v", seq_along(verbs$present)))
 verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
 
-
 # Need to randomly select a word from psw_list (based on user input divided by number of paragraphs?), find the
 # pos of the word, randomly find a word of the same part of speech in one of the other lists, pull that word in
 # and replace it with the original one.
@@ -191,11 +192,34 @@ replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
 iterations == 7
 for (i in iterations){ # for a specific change in the total amount of changes
   # select a random word and find the pos using 'pos' in spacy_parsed
+  random_p <- sample(psw_list, 1)
+  random_w_in_p <- sample(random_p, 1)
   parsed <- spacy_parse(sample(psw_list$p1, 1)) 
   pos <- parsed[1,6] 
   # coditional logic below
   # make sure the word is changed and saved in the logic
   # go to the next word
+  if (pos == NOUN){
+    n <- selectNoun(1, psw_list$p1)
+    n <- replaceNoun(n)
+  } else if (pos == ADJ){
+    n <- selectAdj(1, psw_list$p1)
+    n <- replaceAdj(n)
+  } else if (pos == ADV){
+    n <- selectAdverbs(1, psw_list$p1)
+    n <- replaceAdverb(n)
+  } else if (pos == PROPN){
+    n <- selectProperNoun(1, psw_list$p1)
+    n <- replaceProperNoun(n) 
+  } else if (pos == VERB){
+    # this is the tricky part
+  }else if (pos == NUM){
+    n <- selectNumber(1, psw_list$p1)
+    n <- replaceNumber(n) # need to write this function
+  } else if( word.pos == somethingelse) {
+    # or just else?
+    # pick another word but dont increase the i?
+  }
 }
 
 # Pseudocode for logical flow of replacement of one word
@@ -209,33 +233,15 @@ if (pos == NOUN){
 } else if (pos == ADV){
   n <- selectAdverbs(1, psw_list$p1)
   n <- replaceAdverb(n)
-} else if (pos == NUM){
-  n <- selectNumber(1, psw_list$p1)
-  n <- replaceNumber(n) # need to write this function
 } else if (pos == PROPN){
   n <- selectProperNoun(1, psw_list$p1)
-  n <- replaceProperNoun(n) # need to write this function
+  n <- replaceProperNoun(n) 
 } else if (pos == VERB){
   # this is the tricky part
-} else if (pos == PUNCT){
-  # add one for punctuation
-} else if( word.pos == somethingelse) # or just else?
+}else if (pos == NUM){
+  n <- selectNumber(1, psw_list$p1)
+  n <- replaceNumber(n) # need to write this function
+} else if( word.pos == somethingelse) {
+  # or just else?
   # pick another word but dont increase the i?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
