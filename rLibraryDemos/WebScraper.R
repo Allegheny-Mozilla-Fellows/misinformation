@@ -140,19 +140,6 @@ verbs <- verbs$verbs
 verbs_present <- setNames(as.list(verbs$present), paste0("v", seq_along(verbs$present)))
 verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
 
-# Need to randomly select a word from psw_list (based on user input divided by number of paragraphs?), find the
-# pos of the word, randomly find a word of the same part of speech in one of the other lists, pull that word in
-# and replace it with the original one.
-
-# Steps from here: 1) Take in the total number of iterations from the shiny app widget, and evenly divide those among 
-# the total number of paragraphs in the article? Or make it top heavy like OBC mentioned, putting the majority of the
-# changes towards the beginning of the article. 2) Begin writing the algorithm that will randomly decide what types
-# of words to change (as in parts of speech) using the methods written above. 3) Find a library of words of the same
-# parts of speech, check Spacyr again, but I believe that feature may only be in Spacy. 3) Figure out how to pull in
-# a new word of the same parts of speech from that library and then replace the randomly selected word with the new one.
-
-# Algorithm thar decides which words to change, use nouns, adjs, and adverbs at the moment.
-
 # select random noun from 'nouns' and replace it with the old and save it in the paragraph
 psw_list$p1[WORD] <- str_replace(psw_list$p1[WORD], psw_list$p1[WORD], sample(1, nouns)) # works
 replaceNoun(psw_list$p1[24])
@@ -202,21 +189,21 @@ for (i in iterations){ # for a specific change in the total amount of changes
   # coditional logic below
   # make sure the word is changed and saved in the logic
   # go to the next word
-  if (pos == NOUN){
+  if (pos == "NOUN"){
     n <- selectNoun(1, psw_list$p1)
     n <- replaceNoun(n)
-  } else if (pos == ADJ){
+  } else if (pos == "ADJ"){
     n <- selectAdj(1, psw_list$p1)
     n <- replaceAdj(n)
-  } else if (pos == ADV){
+  } else if (pos == "ADV"){
     n <- selectAdverbs(1, psw_list$p1)
     n <- replaceAdverb(n)
-  } else if (pos == PROPN){
+  } else if (pos == "PROPN"){
     n <- selectProperNoun(1, psw_list$p1)
     n <- replaceProperNoun(n) 
-  } else if (pos == VERB){
+  } else if (pos == "VERB"){
     # this is the tricky part
-  }else if (pos == NUM){
+  }else if (pos == "NUM"){
     n <- selectNumber(1, psw_list$p1)
     n <- replaceNumber(n) # need to write this function
   } else if( word.pos == somethingelse) {
@@ -225,26 +212,4 @@ for (i in iterations){ # for a specific change in the total amount of changes
   }
 }
 
-# Pseudocode for logical flow of replacement of one word
-# Will this be inside a for loop?
-if (pos == NOUN){
-  n <- selectNoun(1, psw_list$p1)
-  n <- replaceNoun(n)
-} else if (pos == ADJ){
-  n <- selectAdj(1, psw_list$p1)
-  n <- replaceAdj(n)
-} else if (pos == ADV){
-  n <- selectAdverbs(1, psw_list$p1)
-  n <- replaceAdverb(n)
-} else if (pos == PROPN){
-  n <- selectProperNoun(1, psw_list$p1)
-  n <- replaceProperNoun(n) 
-} else if (pos == VERB){
-  # this is the tricky part
-}else if (pos == NUM){
-  n <- selectNumber(1, psw_list$p1)
-  n <- replaceNumber(n) # need to write this function
-} else if( word.pos == somethingelse) {
-  # or just else?
-  # pick another word but dont increase the i?
-}
+
