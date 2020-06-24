@@ -172,10 +172,13 @@ replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
   return(prpnoun)
 }
 
-# 'iterations' will be read in from the slider in shiny
-# go through psw_list and select a word to parse
+# Currently, the loop below 1) takes in a number of iterations (fized # ATM) from the shiny app and will use that to
+# figure out how many loops to complete, 2) selects a random paragraph to choose a word from and renames it so it
+# can be iterated through, 3) turns that paragraph into a list where each element is a word, in sequential order,
+# 4) randomly selects a word from that paragraph list and then converts it from a list element to a string, 5)
+# spacy parses that string element and saves the part of speech as a variable, 6) then performs the conditional
+# logic.
 
-# Loop for the pseudocode to go through
 iterations == 7
 for (i in iterations){ # for a specific change in the total amount of changes
   # select a random word and find the pos using 'pos' in spacy_parsed
