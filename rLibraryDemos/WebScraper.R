@@ -193,8 +193,11 @@ iterations == 7
 for (i in iterations){ # for a specific change in the total amount of changes
   # select a random word and find the pos using 'pos' in spacy_parsed
   random_p <- sample(psw_list, 1)
+  random_p <- setNames(as.list(random_p), paste0("w", seq_along(random_p)))
+  random_p <- setNames(as.list(random_p$w1), paste0("w", seq_along(random_p$w1)))
   random_w_in_p <- sample(random_p, 1)
-  parsed <- spacy_parse(sample(psw_list$p1, 1)) 
+  random_w_in_p <- as.character(random_w_in_p) 
+  parsed <- spacy_parse(random_w_in_p) # doesn't parse a list, need to save the element as a string
   pos <- parsed[1,6] 
   # coditional logic below
   # make sure the word is changed and saved in the logic
