@@ -5,7 +5,7 @@ install.packages('rvest')
 install.packages("rcorpora")
 install.packages("radlibs")
 install.packages("stringr")
-install.packages("quanteda")
+# install.packages("quanteda")
 install.packages("spacyr")
 install.packages("rlist")
 
@@ -17,7 +17,7 @@ library('purrr')
 library('xml2')
 library('dplyr')
 library('quanteda')
-library('rcorpora')
+# library('rcorpora')
 library('radlibs')
 library('rlist')
 
@@ -51,70 +51,72 @@ paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 rm(paragraphs_separated_by_word)
 
-# useful for selecting words of specific POS, only works on 'paragraph_list' since it's not tokenized
-
 # SELECT NOUN FUNCTION
-selectNoun <- function(num_of_nouns, string_to_parse){
+selectNoun <- function(string_to_parse){
   nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/NOUN"))
   nouns <- str_split(nouns, "   ")
-  return(sample(nouns, num_of_nouns))
+  for (i in nouns){
+    str_remove(i, "/NOUN")
+  }
+      sample(nouns, 1)
+  return()
 }
 
 # SELECT PROPER NOUN FUNCTION
-selectProperNoun <- function(num_of_prnouns, string_to_parse){
+selectProperNoun <- function(string_to_parse){
   proper_nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/PROPN"))
   proper_nouns <- str_split(proper_nouns, "   ")
-  return(sample(proper_nouns, num_of_prnouns))
+  return(sample(proper_nouns, 1))
 }
 
 # SELECT ADJECTIVE FUNCTION
-selectAdj <- function(num_of_adjs, string_to_parse){
+selectAdj <- function(string_to_parse){
   adjs <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/ADJ"))
   adjs <- str_split(adjs, "   ")
-  return(sample(adjs, num_of_adjs))
+  return(sample(adjs, 1))
 }
 
 # SELECT VERB FUNCTION
-selectVerb <- function(num_of_verbs, string_to_parse){
+selectVerb <- function(string_to_parse){
   verbs <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/VERB"))
   verbs <- str_split(verbs, "   ")
-  return(sample(verbs, num_of_verbs))
+  return(sample(verbs, 1))
 }
 
 # SELECT ADVERB FUNCTION
-selectAdverbs <- function(num_of_adverbs, string_to_parse){
+selectAdverbs <- function(string_to_parse){
   adverbs <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/ADV"))
   adverbs <- str_split(adverbs, "   ")
-  return(sample(adverbs, num_of_adverbs))
+  return(sample(adverbs, 1))
 }
 
 # SELECT NUMBER FUNCTION 
-selectNumber <- function(num_of_numbers, string_to_parse){
+selectNumber <- function(string_to_parse){
   numbers <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/NUM"))
   numbers <- str_split(numbers, "   ")
-  return(sample(numbers, num_of_numbers))
+  return(sample(numbers, 1))
 }
 
 # SELECT ADPOSITION FUNCTION
 # Might delete this, probably not necessary
-selectAdpo <- function(num_of_adpos, string_to_parse){
+selectAdpo <- function(string_to_parse){
   adpos <- spacy_parse(string_to_parse, pos = TRUE) %>%
     as.tokens(include_pos = "pos") %>%
     tokens_select(pattern = c("*/ADP"))
   adpos <- str_split(adpos, "   ")
-  return(sample(adpos, num_of_adpos))
+  return(sample(adpos, 1))
 }
 
 # Pull a nested list of adjectives from rcopora and convert the adjectives to their own list.
@@ -181,10 +183,10 @@ replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
 
 iterations == 1
 for (i in iterations){ # for a specific change in the total amount of changes
+  
   # select a random word and find the pos using 'pos' in spacy_parsed
   random_p <- sample(psw_list, 1)
-  # save the number of paragraph and word or else we can't find it's original spot
-  para_name <- "psw_list$p1" # should look like this
+  
   random_p <- setNames(as.list(random_p), paste0("w", seq_along(random_p)))
   random_p <- setNames(as.list(random_p$w1), paste0("w", seq_along(random_p$w1)))
   random_w_in_p <- sample(random_p, 1)
@@ -192,30 +194,62 @@ for (i in iterations){ # for a specific change in the total amount of changes
   parsed <- spacy_parse(random_w_in_p) # doesn't parse a list, need to save the element as a string
   pos <- parsed[1,6]
   
-  # coditional logic below
-  # make sure the word is changed and saved in the logic
-  # go to the next word
+  n <- sample(names(psw_list), 1); psw_list[[n]]
+  sample(adverbs, 1) -> replacement
+  as.character(replacement) -> replacement
+  str_replace(psw_list[[n]][4], psw_list[[n]][4], replacement)
+  
+  # sample(names(psw_list), 1)
+  # sample(names(sample(psw_list[[n]], 1))) 
+  # sample(psw_list[[n]], 1) -> test
+  
+  n <- sample(names(psw_list), 1); psw_list[[n]]
+  psw_to_work_on <- psw_list[[n]]
+  # changing psw_to_work_on
+  # sample(psw_to_work_on, 1) -> word_to_replace
+  # parsed <- spacy_parse(word_to_replace)
+  # pos <- parsed[1,6]
+  # sample(proper_nouns, 1) -> replacement
+  # as.character(replacement) -> replacement
+  # replacement -> word_to_replace
+  
+  n <- sample(names(psw_list), 1); psw_list[[n]] 
+  i <- sample(length(psw_list[[n]]), 1) 
+  parsed <- spacy_parse(psw_list[[n]][i])
+  pos <- parsed[1,6]
+    # tabbing because the if starts here
+    sample(verbs_past, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][i] <- replacement
+    # this still hasn't replaced it why??
+    
+  psw_list[[n]] <- psw_to_work_on
+  # psw_list[[n]][i] <- replacement_word
+
   if (pos == "NOUN"){
     n <- selectNoun(1, psw_list$p1) # word is already selected, just need to replace it and save
     n <- as.character(n)
     n <- replaceNoun(n)
+    psw_list[[n]] <- psw_to_work_on
   } else if (pos == "ADJ"){
     n <- selectAdj(1, psw_list$p1)
     n <- replaceAdj(n)
+    psw_list[[n]] <- psw_to_work_on
   } else if (pos == "ADV"){
     n <- selectAdverbs(1, psw_list$p1)
     n <- replaceAdverb(n)
+    psw_list[[n]] <- psw_to_work_on
   } else if (pos == "PROPN"){
     n <- selectProperNoun(1, psw_list$p1)
     n <- replaceProperNoun(n) 
+    psw_list[[n]] <- psw_to_work_on
   } else if (pos == "VERB"){
     # this is the tricky part
-  }else if (pos == "NUM"){
-    n <- selectNumber(1, psw_list$p1)
-    n <- replaceNumber(n) # need to write this function
-  } else if( word.pos == somethingelse) {
+    psw_list[[n]] <- psw_to_work_on
+  }else if( word.pos == somethingelse) {
     # or just else?
     # pick another word but dont increase the i?
+    psw_list[[n]] <- psw_to_work_on
   }
 }
 
@@ -243,8 +277,7 @@ replaceNoun <- function(noun){
   return(noun)
 }
 
-
-
+# str_split(' ') -> paragraphs_separated_by_word
 
 
 
