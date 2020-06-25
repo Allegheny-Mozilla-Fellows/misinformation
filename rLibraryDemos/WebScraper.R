@@ -179,21 +179,25 @@ replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
 # spacy parses that string element and saves the part of speech as a variable, 6) then performs the conditional
 # logic.
 
-iterations == 7
+iterations == 1
 for (i in iterations){ # for a specific change in the total amount of changes
   # select a random word and find the pos using 'pos' in spacy_parsed
   random_p <- sample(psw_list, 1)
+  # save the number of paragraph and word or else we can't find it's original spot
+  para_name <- "psw_list$p1" # should look like this
   random_p <- setNames(as.list(random_p), paste0("w", seq_along(random_p)))
   random_p <- setNames(as.list(random_p$w1), paste0("w", seq_along(random_p$w1)))
   random_w_in_p <- sample(random_p, 1)
-  random_w_in_p <- as.character(random_w_in_p) 
+  random_w_in_p <- as.character(random_w_in_p)
   parsed <- spacy_parse(random_w_in_p) # doesn't parse a list, need to save the element as a string
-  pos <- parsed[1,6] 
+  pos <- parsed[1,6]
+  
   # coditional logic below
   # make sure the word is changed and saved in the logic
   # go to the next word
   if (pos == "NOUN"){
-    n <- selectNoun(1, psw_list$p1)
+    n <- selectNoun(1, psw_list$p1) # word is already selected, just need to replace it and save
+    n <- as.character(n)
     n <- replaceNoun(n)
   } else if (pos == "ADJ"){
     n <- selectAdj(1, psw_list$p1)
@@ -214,5 +218,42 @@ for (i in iterations){ # for a specific change in the total amount of changes
     # pick another word but dont increase the i?
   }
 }
+
+# select a random word and find the pos using 'pos' in spacy_parsed
+random_p <- sample(psw_list, 1)
+# save the number of paragraph and word or else we can't find it's original spot
+# para_name <- "psw_list$p1" # should look like this
+random_p_test <- setNames(as.list(random_p), paste0("w", seq_along(random_p)))
+random_p <- setNames(as.list(random_p$w1), paste0("w", seq_along(random_p$w1)))
+random_w_in_p <- sample(random_p, 1)
+random_w_in_p <- as.character(random_w_in_p) 
+replaceNoun(random_w_in_p)
+
+
+selectNoun <- function(string_to_parse){
+  nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
+    as.tokens(include_pos = "pos") %>%
+    tokens_select(pattern = c("*/NOUN"))
+  nouns <- str_split(nouns, "   ")
+  return(sample(nouns, 1))
+}
+replaceNoun <- function(noun){
+  random_noun <- toString(sample(nouns, 1))
+  noun <- str_replace(noun, noun, random_noun)
+  return(noun)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
