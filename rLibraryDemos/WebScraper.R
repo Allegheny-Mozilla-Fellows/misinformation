@@ -8,6 +8,7 @@ install.packages("stringr")
 # install.packages("quanteda")
 install.packages("spacyr")
 install.packages("rlist")
+install.packages("qdapDictionaries")
 
 # Loading some useful packages
 library('rvest')
@@ -17,9 +18,10 @@ library('purrr')
 library('xml2')
 library('dplyr')
 library('quanteda')
-# library('rcorpora')
+library('rcorpora')
 library('radlibs')
 library('rlist')
+library('qdapDictionaries')
 
 # Specifying the url for desired website to be scraped
 # All NYT url's seem to work so far
@@ -38,86 +40,18 @@ NYTwebpage <- read_html(url)
 # Pull text from the html and separate each paragraph
 NYTwebpage %>%
   html_nodes(".css-53u6y8 p") %>%
-  html_text() -> paragraphs 
+  html_text() -> paragraphs
 
 # Pull text from html and separate each paragraph by each word
 NYTwebpage %>%
   html_nodes(".css-53u6y8 p") %>%
-  html_text() %>% 
+  html_text() %>%
   str_split(' ') -> paragraphs_separated_by_word
 
 # Turn 'paragraphs' and 'paragraphs_separated_by_word' into list objects, change naming conventions
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 rm(paragraphs_separated_by_word)
-
-# SELECT NOUN FUNCTION
-selectNoun <- function(string_to_parse){
-  nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/NOUN"))
-  nouns <- str_split(nouns, "   ")
-  for (i in nouns){
-    str_remove(i, "/NOUN")
-  }
-      sample(nouns, 1)
-  return()
-}
-
-# SELECT PROPER NOUN FUNCTION
-selectProperNoun <- function(string_to_parse){
-  proper_nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/PROPN"))
-  proper_nouns <- str_split(proper_nouns, "   ")
-  return(sample(proper_nouns, 1))
-}
-
-# SELECT ADJECTIVE FUNCTION
-selectAdj <- function(string_to_parse){
-  adjs <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/ADJ"))
-  adjs <- str_split(adjs, "   ")
-  return(sample(adjs, 1))
-}
-
-# SELECT VERB FUNCTION
-selectVerb <- function(string_to_parse){
-  verbs <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/VERB"))
-  verbs <- str_split(verbs, "   ")
-  return(sample(verbs, 1))
-}
-
-# SELECT ADVERB FUNCTION
-selectAdverbs <- function(string_to_parse){
-  adverbs <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/ADV"))
-  adverbs <- str_split(adverbs, "   ")
-  return(sample(adverbs, 1))
-}
-
-# SELECT NUMBER FUNCTION 
-selectNumber <- function(string_to_parse){
-  numbers <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/NUM"))
-  numbers <- str_split(numbers, "   ")
-  return(sample(numbers, 1))
-}
-
-# SELECT ADPOSITION FUNCTION
-# Might delete this, probably not necessary
-selectAdpo <- function(string_to_parse){
-  adpos <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/ADP"))
-  adpos <- str_split(adpos, "   ")
-  return(sample(adpos, 1))
-}
 
 # Pull a nested list of adjectives from rcopora and convert the adjectives to their own list.
 adjs <- corpora('words/adjs')
@@ -131,7 +65,7 @@ adverbs <- setNames(as.list(adverbs$adverbs), paste0("adv", seq_along(adverbs$ad
 nouns <- corpora('words/nouns')
 nouns <- setNames(as.list(nouns$nouns), paste0("n", seq_along(nouns$nouns)))
 
-# Pull a dataframe of proper nouns and save them as a list 
+# Pull a dataframe of proper nouns and save them as a list
 data("proper_nouns")
 proper_nouns <- force(proper_nouns)
 proper_nouns <- setNames(as.list(proper_nouns$word), paste0("pr", seq_along(proper_nouns$word)))
@@ -142,116 +76,75 @@ verbs <- verbs$verbs
 verbs_present <- setNames(as.list(verbs$present), paste0("v", seq_along(verbs$present)))
 verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
 
-# select random noun from 'nouns' and replace it with the old and save it in the paragraph
-psw_list$p1[WORD] <- str_replace(psw_list$p1[WORD], psw_list$p1[WORD], sample(1, nouns)) # works
-replaceNoun(psw_list$p1[24])
+# Pull a list of prepositions from the 'qdapDictionaries' library
+data(preposition)
+prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposition)))
 
-# Function to replace a chosen noun 
-replaceNoun <- function(noun){
-  random_noun <- toString(sample(nouns, 1))
-  noun <- str_replace(noun, noun, random_noun)
-  return(noun)
-}
+# Currently, the loop below 1) takes in a number of iterations (fized # ATM) from the shiny app and will use that
+# to figure out how many loops to complete, 2) selects a random paragraph to choose a word from and saves that
+# paragraph's index as n, 4) randomly selects a word from that paragraph and saves that word's index as j, 5) spacy
+# parses that word and saves the part of speech as a variable, 6) performs the conditional logic that randomly
+# selects a word from a large dataset of words of the same part of speech, 7) converts that replacement word from
+# a list element to a string, 8) replaces that new word in the old word's index, specifically 'psw_list[[n]][j]'.
 
-# Function to replace a chosen adjective
-replaceAdj <- function(adj){ # 'adj' should like 'psw_list$p1[1]'
-  random_adj <- toString(sample(adjs, 1))
-  adj <- str_replace(adj, adj, random_adj)
-  return(adj)
-} #doesn't save the new adj in place of the old one, have to do so explicitly afterwards
-
-# Function to replace a chosen adverb
-replaceAdverb <- function(adv){ # adj' should like 'psw_list$p1[1]'
-  random_adv <- toString(sample(adverbs, 1))
-  adv <- str_replace(adv, adv, random_adv)
-  return(adv)
-}
-
-# Function to replace a chosen proper noun
-replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
-  random_prpnoun <- toString(sample(adjs, 1))
-  prpnoun <- str_replace(prpnoun, prpnoun, random_prpnoun)
-  return(prpnoun)
-}
-
-# Currently, the loop below 1) takes in a number of iterations (fized # ATM) from the shiny app and will use that to
-# figure out how many loops to complete, 2) selects a random paragraph to choose a word from and renames it so it
-# can be iterated through, 3) turns that paragraph into a list where each element is a word, in sequential order,
-# 4) randomly selects a word from that paragraph list and then converts it from a list element to a string, 5)
-# spacy parses that string element and saves the part of speech as a variable, 6) then performs the conditional
-# logic.
+# IT NOW NEEDS: 1) specification of the verb's tense, either past or present; 2)  to go back to the beginning of the
+# loop if it is neither a verb, noun, proper noun, adjective, adverb, preposition/adposition
 
 iterations == 1
 for (i in iterations){ # for a specific change in the total amount of changes
-  n <- sample(names(psw_list), 1); psw_list[[n]] 
-  i <- sample(length(psw_list[[n]]), 1) 
-  parsed <- spacy_parse(psw_list[[n]][i])
+  n <- sample(names(psw_list), 1) 
+  j <- sample(length(psw_list[[n]]), 1) 
+  parsed <- spacy_parse(psw_list[[n]][j])
   pos <- parsed[1,6]
     # tabbing because the if starts here
+  if (pos == "NOUN"){
+    sample(nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "ADJ"){
+    sample(adjs, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "ADV"){
+    sample(adverbs, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "PROPN"){
+    sample(proper_nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "ADP"){
+    sample(prepositions, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "VERB"){
+    # Need to add nested if to determine if it's past or present tense
     sample(verbs_past, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][i] <- replacement
-    
-    
-  if (pos == "NOUN"){
-    n <- selectNoun(1, psw_list$p1) # word is already selected, just need to replace it and save
-    n <- as.character(n)
-    n <- replaceNoun(n)
-    psw_list[[n]] <- psw_to_work_on
-  } else if (pos == "ADJ"){
-    n <- selectAdj(1, psw_list$p1)
-    n <- replaceAdj(n)
-    psw_list[[n]] <- psw_to_work_on
-  } else if (pos == "ADV"){
-    n <- selectAdverbs(1, psw_list$p1)
-    n <- replaceAdverb(n)
-    psw_list[[n]] <- psw_to_work_on
-  } else if (pos == "PROPN"){
-    n <- selectProperNoun(1, psw_list$p1)
-    n <- replaceProperNoun(n) 
-    psw_list[[n]] <- psw_to_work_on
-  } else if (pos == "VERB"){
-    # this is the tricky part
-    psw_list[[n]] <- psw_to_work_on
-  }else if( word.pos == somethingelse) {
-    # or just else?
-    # pick another word but dont increase the i?
-    psw_list[[n]] <- psw_to_work_on
+    psw_list[[n]][j] <- replacement
+  } else if( word.pos == somethingelse) {
+   
   }
 }
 
-# select a random word and find the pos using 'pos' in spacy_parsed
-random_p <- sample(psw_list, 1)
-# save the number of paragraph and word or else we can't find it's original spot
-# para_name <- "psw_list$p1" # should look like this
-random_p_test <- setNames(as.list(random_p), paste0("w", seq_along(random_p)))
-random_p <- setNames(as.list(random_p$w1), paste0("w", seq_along(random_p$w1)))
-random_w_in_p <- sample(random_p, 1)
-random_w_in_p <- as.character(random_w_in_p) 
-replaceNoun(random_w_in_p)
+# After this loop, which handles all word replacement in the code, we will need to reformat the 'psw_list' to look
+# like paragraphs and print that out in the shiny app or in R markdown. Ask OBC if he has experience doing this.
 
+# # SELECT NOUN FUNCTION
+# selectNoun <- function(string_to_parse){
+#   nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
+#     as.tokens(include_pos = "pos") %>%
+#     tokens_select(pattern = c("*/NOUN"))
+#   nouns <- str_split(nouns, "   ")
+#   return(sample(nouns, 1))
+# }
 
-selectNoun <- function(string_to_parse){
-  nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
-    as.tokens(include_pos = "pos") %>%
-    tokens_select(pattern = c("*/NOUN"))
-  nouns <- str_split(nouns, "   ")
-  return(sample(nouns, 1))
-}
-replaceNoun <- function(noun){
-  random_noun <- toString(sample(nouns, 1))
-  noun <- str_replace(noun, noun, random_noun)
-  return(noun)
-}
-
-# str_split(' ') -> paragraphs_separated_by_word
-
-
-
-
-
-
-
+# # Function to replace a chosen noun 
+# replaceNoun <- function(noun){
+#   random_noun <- toString(sample(nouns, 1))
+#   noun <- str_replace(noun, noun, random_noun)
+#   return(noun)
+# }
 
 
 
