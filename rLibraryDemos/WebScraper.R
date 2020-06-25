@@ -183,36 +183,6 @@ replaceProperNoun <- function(prpnoun){ # adj' should like 'psw_list$p1[1]'
 
 iterations == 1
 for (i in iterations){ # for a specific change in the total amount of changes
-  
-  # select a random word and find the pos using 'pos' in spacy_parsed
-  random_p <- sample(psw_list, 1)
-  
-  random_p <- setNames(as.list(random_p), paste0("w", seq_along(random_p)))
-  random_p <- setNames(as.list(random_p$w1), paste0("w", seq_along(random_p$w1)))
-  random_w_in_p <- sample(random_p, 1)
-  random_w_in_p <- as.character(random_w_in_p)
-  parsed <- spacy_parse(random_w_in_p) # doesn't parse a list, need to save the element as a string
-  pos <- parsed[1,6]
-  
-  n <- sample(names(psw_list), 1); psw_list[[n]]
-  sample(adverbs, 1) -> replacement
-  as.character(replacement) -> replacement
-  str_replace(psw_list[[n]][4], psw_list[[n]][4], replacement)
-  
-  # sample(names(psw_list), 1)
-  # sample(names(sample(psw_list[[n]], 1))) 
-  # sample(psw_list[[n]], 1) -> test
-  
-  n <- sample(names(psw_list), 1); psw_list[[n]]
-  psw_to_work_on <- psw_list[[n]]
-  # changing psw_to_work_on
-  # sample(psw_to_work_on, 1) -> word_to_replace
-  # parsed <- spacy_parse(word_to_replace)
-  # pos <- parsed[1,6]
-  # sample(proper_nouns, 1) -> replacement
-  # as.character(replacement) -> replacement
-  # replacement -> word_to_replace
-  
   n <- sample(names(psw_list), 1); psw_list[[n]] 
   i <- sample(length(psw_list[[n]]), 1) 
   parsed <- spacy_parse(psw_list[[n]][i])
@@ -221,11 +191,8 @@ for (i in iterations){ # for a specific change in the total amount of changes
     sample(verbs_past, 1) -> replacement
     as.character(replacement) -> replacement
     psw_list[[n]][i] <- replacement
-    # this still hasn't replaced it why??
     
-  psw_list[[n]] <- psw_to_work_on
-  # psw_list[[n]][i] <- replacement_word
-
+    
   if (pos == "NOUN"){
     n <- selectNoun(1, psw_list$p1) # word is already selected, just need to replace it and save
     n <- as.character(n)
