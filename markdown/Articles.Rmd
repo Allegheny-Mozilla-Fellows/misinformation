@@ -10,32 +10,17 @@ runtime: shiny
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<!-- This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately.  -->
 
-<!-- To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html). -->
+I assume using the format below should help me print the newly changed sentences, but is it possible to import code from another place and then print the paragraphs here?
 
-<!-- You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot. -->
+According to calvin.edu: 'If you run R code in the console or the RStudio GUI (for example, reading in a data set by pasting code into the console or using the Import Dataset button in the Environment tab), you won’t be able to use the results in your markdown file. Any and all commands you need, including reading in data, need to be included in the file.'
 
-## Slider Input
-
-```{r slider-input}
-sliderInput(
-  inputId = 'iterations', label = '# of Changes to Make:',
-  min = 5, max = 500, value = 100
-)
+```{r}
+library(tibble)
+# Text scraped from somewhere and placed into the variable "character_variable"
+character_variable <- "this is a character variable"
+character_variable <- as_tibble(character_variable)
 ```
-
-
-
-<!-- It's also possible to embed an entire Shiny application within an R Markdown document using the `shinyAppDir` function. This example embeds a Shiny application located in another directory: -->
-
-
-
-<!-- Note the use of the `height` parameter to determine how much vertical space the embedded application should occupy. -->
-
-<!-- You can also use the `shinyApp` function to define an application inline rather then in an external directory. -->
-
-<!-- In all of R code chunks above the `echo = FALSE` attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components. -->
-
+This is the text I have scraped: `r character_variable$value`.
 
 

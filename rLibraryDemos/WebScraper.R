@@ -90,13 +90,56 @@ prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposit
 # IT NOW NEEDS: 1) specification of the verb's tense, either past or present; 2)  to go back to the beginning of the
 # loop if it is neither a verb, noun, proper noun, adjective, adverb, preposition/adposition
 
+# iterations == 1
+# for (i in iterations){ # for a specific change in the total amount of changes
+#   n <- sample(names(psw_list), 1) 
+#   j <- sample(length(psw_list[[n]]), 1) 
+#   parsed <- spacy_parse(psw_list[[n]][j])
+#   pos <- parsed[1,6]
+#     # tabbing because the if starts here
+#   if (pos == "NOUN"){
+#     sample(nouns, 1) -> replacement
+#     as.character(replacement) -> replacement
+#     psw_list[[n]][j] <- replacement
+#   } else if (pos == "ADJ"){
+#     sample(adjs, 1) -> replacement
+#     as.character(replacement) -> replacement
+#     psw_list[[n]][j] <- replacement
+#   } else if (pos == "ADV"){
+#     sample(adverbs, 1) -> replacement
+#     as.character(replacement) -> replacement
+#     psw_list[[n]][j] <- replacement
+#   } else if (pos == "PROPN"){
+#     sample(proper_nouns, 1) -> replacement
+#     as.character(replacement) -> replacement
+#     psw_list[[n]][j] <- replacement
+#   } else if (pos == "ADP"){
+#     sample(prepositions, 1) -> replacement
+#     as.character(replacement) -> replacement
+#     psw_list[[n]][j] <- replacement
+#   } else if (pos == "VERB"){
+#     # Need to add nested if to determine if it's past or present tense
+#     sample(verbs_past, 1) -> replacement
+#     as.character(replacement) -> replacement
+#     psw_list[[n]][j] <- replacement
+#   } else if( word.pos == "AUX" || "CONJ" || "DET" || "INTJ" || "NUM" || "PART" || "PROPN" || "PUNCT" 
+#              || "SCONJ" || "SYM" || "X") {
+#    
+#   }
+# }
+
+LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM", "X")
 iterations == 1
 for (i in iterations){ # for a specific change in the total amount of changes
-  n <- sample(names(psw_list), 1) 
-  j <- sample(length(psw_list[[n]]), 1) 
-  parsed <- spacy_parse(psw_list[[n]][j])
-  pos <- parsed[1,6]
-    # tabbing because the if starts here
+  repeat{
+    n <- sample(names(psw_list), 1) 
+    j <- sample(length(psw_list[[n]]), 1) 
+    parsed <- spacy_parse(psw_list[[n]][j])
+    pos <- parsed[1,6]
+    if(!(pos %in% UNLIST_OF_ACCEPTABLE_POS))
+      break;
+  }
+  
   if (pos == "NOUN"){
     sample(nouns, 1) -> replacement
     as.character(replacement) -> replacement
@@ -122,31 +165,20 @@ for (i in iterations){ # for a specific change in the total amount of changes
     sample(verbs_past, 1) -> replacement
     as.character(replacement) -> replacement
     psw_list[[n]][j] <- replacement
-  } else if( word.pos == somethingelse) {
-   
   }
 }
 
-# After this loop, which handles all word replacement in the code, we will need to reformat the 'psw_list' to look
-# like paragraphs and print that out in the shiny app or in R markdown. Ask OBC if he has experience doing this.
+# Both lines below work
+# Remove the whitespace in between the words
+for (i in seq_along(psw_list)) {
+  psw_list[[i]] <- paste(psw_list[[i]], collapse = " ")
+}
 
-# # SELECT NOUN FUNCTION
-# selectNoun <- function(string_to_parse){
-#   nouns <- spacy_parse(string_to_parse, pos = TRUE) %>%
-#     as.tokens(include_pos = "pos") %>%
-#     tokens_select(pattern = c("*/NOUN"))
-#   nouns <- str_split(nouns, "   ")
-#   return(sample(nouns, 1))
-# }
+# Remove the whitespace in between the words
+lapply(psw_list, paste, collapse = " ")
 
-# # Function to replace a chosen noun 
-# replaceNoun <- function(noun){
-#   random_noun <- toString(sample(nouns, 1))
-#   noun <- str_replace(noun, noun, random_noun)
-#   return(noun)
-# }
-
-
+# Write the new paragraphs to a txt file
+write(unlist(psw_list), "new_article.txt", sep = "\n")
 
 
 
