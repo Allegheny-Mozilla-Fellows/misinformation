@@ -48,8 +48,19 @@ NYTwebpage %>%
   html_text() %>%
   str_split(' ') -> paragraphs_separated_by_word
 
+# Creating a demo list of sentences to test the for loop on
+demo_list <- list("I want to eat all the hamburger buns in the entire world because I am so hungy.",
+                  "I just ate a sprite can by accident, I think I should go to the hospital.",
+                  "The doctor gave me some ibuprofen, I don't think he is qualified to do his job.")
+demo_list <- str_split(demo_list, " ")
+demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
+
+
+
 # Turn 'paragraphs' and 'paragraphs_separated_by_word' into list objects, change naming conventions
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
+
+
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 rm(paragraphs_separated_by_word)
 
@@ -90,81 +101,81 @@ prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposit
 # IT NOW NEEDS: 1) specification of the verb's tense, either past or present; 2)  to go back to the beginning of the
 # loop if it is neither a verb, noun, proper noun, adjective, adverb, preposition/adposition
 
-# iterations == 1
-# for (i in iterations){ # for a specific change in the total amount of changes
-#   n <- sample(names(psw_list), 1) 
-#   j <- sample(length(psw_list[[n]]), 1) 
-#   parsed <- spacy_parse(psw_list[[n]][j])
-#   pos <- parsed[1,6]
-#     # tabbing because the if starts here
-#   if (pos == "NOUN"){
-#     sample(nouns, 1) -> replacement
-#     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
-#   } else if (pos == "ADJ"){
-#     sample(adjs, 1) -> replacement
-#     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
-#   } else if (pos == "ADV"){
-#     sample(adverbs, 1) -> replacement
-#     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
-#   } else if (pos == "PROPN"){
-#     sample(proper_nouns, 1) -> replacement
-#     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
-#   } else if (pos == "ADP"){
-#     sample(prepositions, 1) -> replacement
-#     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
-#   } else if (pos == "VERB"){
-#     # Need to add nested if to determine if it's past or present tense
-#     sample(verbs_past, 1) -> replacement
-#     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
-#   } else if( word.pos == "AUX" || "CONJ" || "DET" || "INTJ" || "NUM" || "PART" || "PROPN" || "PUNCT" 
-#              || "SCONJ" || "SYM" || "X") {
-#    
-#   }
-# }
-
-LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM", "X")
 iterations == 1
-for (i in iterations){ # for a specific change in the total amount of changes
-  repeat{
-    n <- sample(names(psw_list), 1) 
-    j <- sample(length(psw_list[[n]]), 1) 
-    parsed <- spacy_parse(psw_list[[n]][j])
-    pos <- parsed[1,6]
-    if(!(pos %in% UNLIST_OF_ACCEPTABLE_POS))
-      break;
-  }
-  
-  if (pos == "NOUN"){
-    sample(nouns, 1) -> replacement
-    as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+for (i in 15){ # for a specific change in the total amount of changes
+  LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM", "X")
+  n <- sample(names(demo_list), 1)
+  j <- sample(length(demo_list[[n]]), 1)
+  parsed <- spacy_parse(demo_list[[n]][j])
+  pos <- parsed[1,6]
+    # tabbing because the if starts here
+  if(pos %in% LIST_OF_UNACCEPTABLE_POS) {
+    i <- i - 1 
+    next
   } else if (pos == "ADJ"){
     sample(adjs, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "ADV"){
     sample(adverbs, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "PROPN"){
     sample(proper_nouns, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "ADP"){
     sample(prepositions, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "VERB"){
     # Need to add nested if to determine if it's past or present tense
     sample(verbs_past, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
+  } else if (pos == "NOUN"){
+    sample(nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
+  }
+}
+
+
+for (i in 15){ # for a specific change in the total amount of changes
+  LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM", "X")
+  repeat{
+    n <- sample(names(demo_list), 1) 
+    j <- sample(length(demo_list[[n]]), 1) 
+    parsed <- spacy_parse(demo_list[[n]][j])
+    pos <- parsed[1,6]
+    if(!(pos %in% LIST_OF_UNACCEPTABLE_POS))
+      break;
+  }
+  if (pos == "NOUN"){
+    sample(nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
+  } else if (pos == "ADJ"){
+    sample(adjs, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
+  } else if (pos == "ADV"){
+    sample(adverbs, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
+  } else if (pos == "PROPN"){
+    sample(proper_nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
+  } else if (pos == "ADP"){
+    sample(prepositions, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
+  } else if (pos == "VERB"){
+    # Need to add nested if to determine if it's past or present tense
+    sample(verbs_past, 1) -> replacement
+    as.character(replacement) -> replacement
+    demo_list[[n]][j] <- replacement
   }
 }
 
