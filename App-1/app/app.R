@@ -44,15 +44,11 @@ ui <- fluidPage(
                   p('This is where the text of the original article will be displayed'),
                   br(),
                   h2("The newly changed article will be displayed here:"),
-                  p('This is where the text of the edited article will be displayed, I attached on the side to either
-                    bold the words and punctuation that were changed or list them so that the user can visually see
-                    the scope of what has changed.'),
+                  p(text),
                   br(),
                   )
     )
 )     
-
-# url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
 
 # Define server logic ----
 server <- function(input, output) {

@@ -50,11 +50,8 @@ demo_list <- str_split(demo_list, " ")
 demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
 
 
-
 # Turn 'paragraphs' and 'paragraphs_separated_by_word' into list objects, change naming conventions
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
-
-
 psw_list <- setNames(as.list(paragraphs_separated_by_word), paste0("p", seq_along(paragraphs_separated_by_word)))
 rm(paragraphs_separated_by_word)
 
@@ -85,24 +82,16 @@ verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
 data(preposition)
 prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposition)))
 
-# Currently, the loop below 1) takes in a number of iterations (fized # ATM) from the shiny app and will use that
-# to figure out how many loops to complete, 2) selects a random paragraph to choose a word from and saves that
-# paragraph's index as n, 4) randomly selects a word from that paragraph and saves that word's index as j, 5) spacy
-# parses that word and saves the part of speech as a variable, 6) performs the conditional logic that randomly
-# selects a word from a large dataset of words of the same part of speech, 7) converts that replacement word from
-# a list element to a string, 8) replaces that new word in the old word's index, specifically 'psw_list[[n]][j]'.
 
-# IT NOW NEEDS: 1) specification of the verb's tense, either past or present; 2)  to go back to the beginning of the
-# loop if it is neither a verb, noun, proper noun, adjective, adverb, preposition/adposition
-
+# PLAY AROUND WITH ITERATIONS
 iterations <- 15
 for (i in 1:iterations){ # for a specific change in the total amount of changes
   LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
                                    "X",  "CCONJ", "SCONJ")
   repeat{
-    n <- sample(names(psw_list), 1) 
-    j <- sample(length(psw_list[[n]]), 1) 
-    parsed <- spacy_parse(psw_list[[n]][j])
+    n <- sample(names(demo_list), 1) 
+    j <- sample(length(demo_list[[n]]), 1) 
+    parsed <- spacy_parse(demo_list[[n]][j])
     pos <- parsed[1,6]
     # print(pos)
     if(!(pos %in% LIST_OF_UNACCEPTABLE_POS))
@@ -112,27 +101,27 @@ for (i in 1:iterations){ # for a specific change in the total amount of changes
   if (pos == "NOUN"){
     sample(nouns, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "ADJ"){
     sample(adjs, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "ADV"){
     sample(adverbs, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "PROPN"){
     sample(proper_nouns, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "ADP"){
     sample(prepositions, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
   } else if (pos == "VERB"){
     sample(verbs_present, 1) -> replacement
     as.character(replacement) -> replacement
-    psw_list[[n]][j] <- replacement
+    demo_list[[n]][j] <- replacement
     # Need to add nested if to determine if it's past or present tense
     # Ask OBC about this
     # if (some_string == "past"){
@@ -148,7 +137,7 @@ for (i in 1:iterations){ # for a specific change in the total amount of changes
 }
 
 # Remove the whitespace in between the words
-paragraph_list <- lapply(psw_list, paste, collapse = " ")
+paragraph_list <- lapply(demo_list, paste, collapse = " ")
 
 # Write the new paragraphs to a txt file
 write(unlist(paragraph_list), "new_article.txt", sep = "\n")
