@@ -5,23 +5,22 @@ install.packages('rvest')
 install.packages("rcorpora") 
 install.packages("radlibs")
 install.packages("stringr")
-# install.packages("quanteda")
 install.packages("spacyr")
-# install.packages("rlist")
 install.packages("qdapDictionaries")
+# install.packages("quanteda")
+# install.packages("rlist")
 
-# Loading some useful packages
-library('rvest') # for: read_html(), html_nodes(), html_text()
-library('stringr') # for: all str_ functions
-library('spacyr') # for: spacy_parse()
-library('purrr') # don't think I use any of it's methods
-library('xml2')
-library('dplyr')
+# Loading all used packages
+library('rvest') 
+library('stringr') 
+library('spacyr') 
+library('rcorpora') 
+library('radlibs') 
+library('qdapDictionaries')
 # library('quanteda')
-library('rcorpora') # for: POS data
-library('radlibs') # for: POS data
 # library('rlist') # don't think I use it's methods
-library('qdapDictionaries') # forL POS data
+# library('purrr')
+# library('dplyr') # not sure
 
 # Specifying the url for desired website to be scraped
 url <- 'insert NYT url in parentheses here'
@@ -152,7 +151,7 @@ for (i in 1:iterations){ # for a specific change in the total amount of changes
 paragraph_list <- lapply(psw_list, paste, collapse = " ")
 
 # Write the new paragraphs to a txt file
-write(unlist(psw_list), "new_article.txt", sep = "\n")
+write(unlist(paragraph_list), "new_article.txt", sep = "\n")
 
 
 
