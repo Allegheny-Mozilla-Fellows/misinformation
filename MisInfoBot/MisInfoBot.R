@@ -2,7 +2,7 @@
 
 # Installing the rvest and stringr package
 install.packages('rvest')
-install.packages("rcorpora")
+install.packages("rcorpora") 
 install.packages("radlibs")
 install.packages("stringr")
 # install.packages("quanteda")
@@ -11,17 +11,17 @@ install.packages("spacyr")
 install.packages("qdapDictionaries")
 
 # Loading some useful packages
-library('rvest')
-library('stringr')
-library('spacyr')
-library('purrr')
+library('rvest') # for: read_html(), html_nodes(), html_text()
+library('stringr') # for: all str_ functions
+library('spacyr') # for: spacy_parse()
+library('purrr') # don't think I use any of it's methods
 library('xml2')
 library('dplyr')
-library('quanteda')
-library('rcorpora')
-library('radlibs')
-library('rlist')
-library('qdapDictionaries')
+# library('quanteda')
+library('rcorpora') # for: POS data
+library('radlibs') # for: POS data
+# library('rlist') # don't think I use it's methods
+library('qdapDictionaries') # forL POS data
 
 # Specifying the url for desired website to be scraped
 url <- 'insert NYT url in parentheses here'
