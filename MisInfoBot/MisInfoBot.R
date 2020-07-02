@@ -22,6 +22,10 @@ library('qdapDictionaries')
 # library('purrr')
 # library('dplyr') # not sure
 
+# PLAY AROUND WITH ITERATIONS, change the number and re-declare the variable every time you want to change the amount of changes
+# that are made in the article.
+iterations <- 15
+
 # Specifying the url for desired website to be scraped
 url <- 'insert NYT url in parentheses here'
 url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
@@ -45,10 +49,14 @@ demo_list <- list("I want to eat all the hamburger buns in the entire world beca
                   "I just ate a sprite can by accident, I think I should go to the hospital.",
                   "The doctor gave me some ibuprofen, I don't think he is qualified to do his job.",
                   "The medicine isn't working, I am more sick than I was before I went to the doctor, send help.",
-                  "A week later and I have lost all sense of taste, probably a good time to lay off the Mickey D's.")
+                  "A week later and I have lost all sense of taste, probably a good time to lay off the Mickey D's.",
+                  "I have been been queasy for weeks now, I think have started to age faster too.",
+                  "I look like I'm fourty-five years old but I just turned 24, this is ridiculous.",
+                  "I'm going to the hospital for special surgery soon, hopefully issues get resolved soon.",
+                  "They did absolutely nothing to me, oh well I guess I will remain sick forever.",
+                  "I thought I was feared by peers, turns out I have fear for my peers.")
 demo_list <- str_split(demo_list, " ")
 demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
-
 
 # Turn 'paragraphs' and 'paragraphs_separated_by_word' into list objects, change naming conventions
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
@@ -83,56 +91,50 @@ data(preposition)
 prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposition)))
 
 
-# PLAY AROUND WITH ITERATIONS
-iterations <- 15
+
 for (i in 1:iterations){ # for a specific change in the total amount of changes
   LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
                                    "X",  "CCONJ", "SCONJ")
   repeat{
-    n <- sample(names(demo_list), 1) 
-    j <- sample(length(demo_list[[n]]), 1) 
-    parsed <- spacy_parse(demo_list[[n]][j])
+    n <- sample(names(psw_list), 1) 
+    j <- sample(length(psw_list[[n]]), 1) 
+    parsed <- spacy_parse(psw_list[[n]][j])
     pos <- parsed[1,6]
     # print(pos)
     if(!(pos %in% LIST_OF_UNACCEPTABLE_POS))
       break;
   } 
-  print(pos)
   if (pos == "NOUN"){
     sample(nouns, 1) -> replacement
     as.character(replacement) -> replacement
-    demo_list[[n]][j] <- replacement
+    psw_list[[n]][j] <- replacement
   } else if (pos == "ADJ"){
     sample(adjs, 1) -> replacement
     as.character(replacement) -> replacement
-    demo_list[[n]][j] <- replacement
+    psw_list[[n]][j] <- replacement
   } else if (pos == "ADV"){
     sample(adverbs, 1) -> replacement
     as.character(replacement) -> replacement
-    demo_list[[n]][j] <- replacement
+    psw_list[[n]][j] <- replacement
   } else if (pos == "PROPN"){
     sample(proper_nouns, 1) -> replacement
     as.character(replacement) -> replacement
-    demo_list[[n]][j] <- replacement
+    psw_list[[n]][j] <- replacement
   } else if (pos == "ADP"){
     sample(prepositions, 1) -> replacement
     as.character(replacement) -> replacement
-    demo_list[[n]][j] <- replacement
+    psw_list[[n]][j] <- replacement
   } else if (pos == "VERB"){
-    sample(verbs_present, 1) -> replacement
-    as.character(replacement) -> replacement
-    demo_list[[n]][j] <- replacement
-    # Need to add nested if to determine if it's past or present tense
-    # Ask OBC about this
-    # if (some_string == "past"){
-    #   sample(verbs_past, 1) -> replacement
-    #   as.character(replacement) -> replacement
-    #   psw_list[[n]][j] <- replacement
-    # } else if (some_string == "present"){
-    #   sample(verbs_present, 1) -> replacement
-    #   as.character(replacement) -> replacement
-    #   psw_list[[n]][j] <- replacement
-    # }
+    str_detect(psw_list[[n]][j], "ed$") -> end_of_verb
+    if (end_of_verb == "TRUE"){
+      sample(verbs_past, 1) -> replacement
+      as.character(replacement) -> replacement
+      psw_list[[n]][j] <- replacement
+    } else if (end_of_verb == "FALSE"){
+      sample(verbs_present, 1) -> replacement
+      as.character(replacement) -> replacement
+      psw_list[[n]][j] <- replacement
+    }
   }
 }
 
