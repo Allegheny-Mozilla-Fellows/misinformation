@@ -1,21 +1,3 @@
-# install.packages('rvest')
-# install.packages("rcorpora")
-# install.packages("radlibs")
-# install.packages("stringr")
-# install.packages("spacyr")
-# install.packages("rlist")
-# install.packages("qdapDictionaries")
-# 
-# library('rvest')
-# library('stringr')
-# library('spacyr')
-# library('purrr')
-# library('xml2')
-# library('dplyr')
-# library('rcorpora')
-# library('radlibs')
-# library('rlist')
-# library('qdapDictionaries')
 library(shiny)
 
 # Define UI ----
@@ -44,7 +26,7 @@ ui <- fluidPage(
                   p('This is where the text of the original article will be displayed'),
                   br(),
                   h2("The newly changed article will be displayed here:"),
-                  p(text),
+                  p(),
                   br(),
                   )
     )
