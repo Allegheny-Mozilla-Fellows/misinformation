@@ -9,7 +9,7 @@ install.packages("spacyr")
 install.packages("qdapDictionaries")
 # install.packages("quanteda")
 # install.packages("rlist")
-install.packages('invctr')
+
 
 # Loading all used packages
 library('rvest') 
@@ -18,7 +18,6 @@ library('spacyr')
 library('rcorpora') 
 library('radlibs') 
 library('qdapDictionaries')
-# library('dplyr') # not sure
 
 # PLAY AROUND WITH ITERATIONS, change the number and re-declare the variable every time you want to change the amount of changes
 # that are made in the article.
@@ -42,33 +41,36 @@ NYTwebpage %>%
   html_text() %>%
   str_split(' ') -> paragraphs_separated_by_word
 
-# Creating a demo list of sentences to test the for loop on
-demo_list <- list("Two roads diverged in a yellow wood",
-                  "And sorry I could not travel both",
-                  "And be one traveler, long I stood",
-                  "And looked down one as far as I could",
-                  "To where it bent in the undergrowth;",
 
-                  "Then took the other, as just as fair,",
-                  "And having perhaps the better claim,",
-                  "Because it was grassy and wanted wear;",
-                  "Though as for that the passing there",
-                  "Had worn them really about the same,",
+# Creating a demonstration list of sentences to test the for loop on
+# Remove the hashtags and copy and paste if you would like to see the changes on a smaller sample
 
-                  "And both that morning equally lay",
-                  "In leaves no step had trodden black.",
-                  "Oh, I kept the first for another day!",
-                  "Yet knowing how way leads on to way,",
-                  "I doubted if I should ever come back.",
+# demo_list <- list("Two roads diverged in a yellow wood",
+#                   "And sorry I could not travel both",
+#                   "And be one traveler, long I stood",
+#                   "And looked down one as far as I could",
+#                   "To where it bent in the undergrowth;",
+# 
+#                   "Then took the other, as just as fair,",
+#                   "And having perhaps the better claim,",
+#                   "Because it was grassy and wanted wear;",
+#                   "Though as for that the passing there",
+#                   "Had worn them really about the same,",
+# 
+#                   "And both that morning equally lay",
+#                   "In leaves no step had trodden black.",
+#                   "Oh, I kept the first for another day!",
+#                   "Yet knowing how way leads on to way,",
+#                   "I doubted if I should ever come back.",
+# 
+#                   "I shall be telling this with a sigh",
+#                   "Somewhere ages and ages hence:",
+#                   "Two roads diverged in a wood, and I—",
+#                   "I took the one less traveled by,",
+#                   "And that has made all the difference.")
+# demo_list <- str_split(demo_list, " ")
+# demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
 
-                  "I shall be telling this with a sigh",
-                  "Somewhere ages and ages hence:",
-                  "Two roads diverged in a wood, and I—",
-                  "I took the one less traveled by,",
-                  "And that has made all the difference.")
-demo_list <- str_split(demo_list, " ")
-demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
-changed_demo_list <- demo_list
 
 # Turn 'paragraphs' and 'paragraphs_separated_by_word' into list objects, change naming conventions
 paragraph_list <- setNames(as.list(paragraphs), paste0("p", seq_along(paragraphs)))
@@ -102,59 +104,17 @@ verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
 data(preposition)
 prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposition)))
 
-for (i in 1:iterations){ # for a specific change in the total amount of changes
-  LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
-                                   "X",  "CCONJ", "SCONJ")
-  repeat{
-    n <- sample(names(changed_demo_list), 1)
-    j <- sample(length(changed_demo_list[[n]]), 1)
-    parsed <- spacy_parse(changed_demo_list[[n]][j])
-    pos <- parsed[1,6]
-    # print(pos)
-    if(!(pos %in% LIST_OF_UNACCEPTABLE_POS))
-      break;
-  }
-  if (pos == "NOUN"){
-    sample(nouns, 1) -> replacement
-    as.character(replacement) -> replacement
-    changed_demo_list[[n]][j] <- replacement
-  } else if (pos == "ADJ"){
-    sample(adjs, 1) -> replacement
-    as.character(replacement) -> replacement
-    changed_demo_list[[n]][j] <- replacement
-  } else if (pos == "ADV"){
-    sample(adverbs, 1) -> replacement
-    as.character(replacement) -> replacement
-    changed_demo_list[[n]][j] <- replacement
-  } else if (pos == "PROPN"){
-    sample(proper_nouns, 1) -> replacement
-    as.character(replacement) -> replacement
-    changed_demo_list[[n]][j] <- replacement
-  } else if (pos == "ADP"){
-    sample(prepositions, 1) -> replacement
-    as.character(replacement) -> replacement
-    changed_demo_list[[n]][j] <- replacement
-  } else if (pos == "VERB"){
-    str_detect(changed_demo_list[[n]][j], "ed$") -> end_of_verb
-    if (end_of_verb == "TRUE"){
-      sample(verbs_past, 1) -> replacement
-      as.character(replacement) -> replacement
-      changed_demo_list[[n]][j] <- replacement
-    } else if (end_of_verb == "FALSE"){
-      sample(verbs_present, 1) -> replacement
-      as.character(replacement) -> replacement
-      changed_demo_list[[n]][j] <- replacement
-    }
-  }
-}
+
+# The for loop to use on the demonsration list
+# Remove the hashtags and copy and paste if you would like to see the changes on a smaller sample
 
 # for (i in 1:iterations){ # for a specific change in the total amount of changes
 #   LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
 #                                    "X",  "CCONJ", "SCONJ")
 #   repeat{
-#     n <- sample(names(psw_list), 1)
-#     j <- sample(length(psw_list[[n]]), 1)
-#     parsed <- spacy_parse(psw_list[[n]][j])
+#     n <- sample(names(demo_list), 1)
+#     j <- sample(length(demo_list[[n]]), 1)
+#     parsed <- spacy_parse(demo_list[[n]][j])
 #     pos <- parsed[1,6]
 #     # print(pos)
 #     if(!(pos %in% LIST_OF_UNACCEPTABLE_POS))
@@ -163,55 +123,102 @@ for (i in 1:iterations){ # for a specific change in the total amount of changes
 #   if (pos == "NOUN"){
 #     sample(nouns, 1) -> replacement
 #     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
+#     demo_list[[n]][j] <- replacement
 #   } else if (pos == "ADJ"){
 #     sample(adjs, 1) -> replacement
 #     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
+#     demo_list[[n]][j] <- replacement
 #   } else if (pos == "ADV"){
 #     sample(adverbs, 1) -> replacement
 #     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
+#     demo_list[[n]][j] <- replacement
 #   } else if (pos == "PROPN"){
 #     sample(proper_nouns, 1) -> replacement
 #     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
+#     demo_list[[n]][j] <- replacement
 #   } else if (pos == "ADP"){
 #     sample(prepositions, 1) -> replacement
 #     as.character(replacement) -> replacement
-#     psw_list[[n]][j] <- replacement
+#     demo_list[[n]][j] <- replacement
 #   } else if (pos == "VERB"){
-#     str_detect(psw_list[[n]][j], "ed$") -> end_of_verb
+#     str_detect(demo_list[[n]][j], "ed$") -> end_of_verb
 #     if (end_of_verb == "TRUE"){
 #       sample(verbs_past, 1) -> replacement
 #       as.character(replacement) -> replacement
-#       psw_list[[n]][j] <- replacement
+#       demo_list[[n]][j] <- replacement
 #     } else if (end_of_verb == "FALSE"){
 #       sample(verbs_present, 1) -> replacement
 #       as.character(replacement) -> replacement
-#       psw_list[[n]][j] <- replacement
+#       demo_list[[n]][j] <- replacement
 #     }
 #   }
 # }
 
+for (i in 1:iterations){ # for a specific change in the total amount of changes
+  LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
+                                   "X",  "CCONJ", "SCONJ")
+  repeat{
+    n <- sample(names(psw_list), 1)
+    j <- sample(length(psw_list[[n]]), 1)
+    parsed <- spacy_parse(psw_list[[n]][j])
+    pos <- parsed[1,6]
+    # print(pos)
+    if(!(pos %in% LIST_OF_UNACCEPTABLE_POS))
+      break;
+  }
+  if (pos == "NOUN"){
+    sample(nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "ADJ"){
+    sample(adjs, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "ADV"){
+    sample(adverbs, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "PROPN"){
+    sample(proper_nouns, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "ADP"){
+    sample(prepositions, 1) -> replacement
+    as.character(replacement) -> replacement
+    psw_list[[n]][j] <- replacement
+  } else if (pos == "VERB"){
+    str_detect(psw_list[[n]][j], "ed$") -> end_of_verb
+    if (end_of_verb == "TRUE"){
+      sample(verbs_past, 1) -> replacement
+      as.character(replacement) -> replacement
+      psw_list[[n]][j] <- replacement
+    } else if (end_of_verb == "FALSE"){
+      sample(verbs_present, 1) -> replacement
+      as.character(replacement) -> replacement
+      psw_list[[n]][j] <- replacement
+    }
+  }
+}
+
 # Remove the whitespace in between the words
-paragraph_list <- lapply(changed_demo_list, paste, collapse = " ")
+paragraph_list <- lapply(psw_list, paste, collapse = " ")
 
 # Write the new paragraphs to a txt file
 write(unlist(paragraph_list), "new_article.txt", sep = "\n")
 
 
-# Working on finding the mutual information in nats
-# Demo Code
-install.packages("infotheo")
-library('infotheo')
-data(USArrests)
-dat<-discretize(USArrests)
-#computes the MIM (mutual information matrix)
-I <- mutinformation(dat,method= "emp")
-I2<- mutinformation(dat[,1],dat[,2])
+# Turning the demonstration list into a txt file
+# Remove the hashtags and copy and paste if you would like to see the changes on a smaller sample
 
-do.call(rbind.data.frame, changed_demo_list) -> changed_demo_df
-do.call(rbind.data.frame, demo_list) -> demo_df
-mutinformation(demo_df, changed_demo_df, method = "emp")
+# Remove the whitespace in between the words
+# paragraph_list <- lapply(demo_list, paste, collapse = " ")
+
+# Write the new paragraphs to a txt file
+# write(unlist(paragraph_list), "new_article.txt", sep = "\n")
+
+
+
+
+
+
 
