@@ -24,7 +24,8 @@ library('qdapDictionaries')
 iterations <- 15
 
 # Specifying the url for desired website to be scraped
-url <- 'insert NYT url in parentheses here'
+# url <- 'enter url here'
+# url <- 'https://www.nytimes.com/2020/07/15/science/hybrid-sturgeon-paddlefish.html'
 # url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
 
 # # Reading the HTML code from the website
