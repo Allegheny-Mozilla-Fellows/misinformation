@@ -33,7 +33,7 @@ Open MisInfoBot.R in RStudio and install and load the following packages:
  install.packages("rcorpora")
  ```
  
- - [Stringr](https://stringr.tidyverse.org/) Built on top of stringi and part of the tidyverse, <https://www.tidyverse.org/>, stringr provides correct implementations of common string manipulations. It can be installed with the following command:
+ - [Stringr](https://stringr.tidyverse.org/) Built on top of stringi and part of the [tidyverse](https://www.tidyverse.org/), stringr provides correct implementations of common string manipulations. It can be installed with the following command:
  
  ``` bash
  install.packages("stringe")
