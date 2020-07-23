@@ -60,7 +60,7 @@ iterations <- 15
  url <- "enter url here"
  ```
  
- `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating and MUST be a New York Times article. You can then run the entirety of the code, the newly manipulated article will be written to `new_article.txt` in plain text.
+ `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating and MUST be a New York Times article. You can then run the entirety of the code, the newly manipulated article will be written to `new_article.txt` in plain text. You can now begin comparing the new article with the old article side by side, .txt file next to New York Times article and begin thinking about the 'Questions in Blue'
  
  ### Classroom Demonstration Code
  
