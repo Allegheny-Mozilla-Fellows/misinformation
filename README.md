@@ -47,10 +47,16 @@ Open MisInfoBot.R in RStudio and install and load the following packages:
  
  - [QDapDictionaries](https://cran.r-project.org/web/packages/qdapDictionaries/index.html) is a collection of text analysis dictionaries and word lists for use with the 'qdap' package. It can be installed with the following command:
  
-  ``` bash
+ ``` bash
  install.packages("qdapdictionaries")
  ```
-  ``` bash
- install.packages("radlibs")
+
+There are two main variables that are to be changed within the code:
+ ``` bash
+iterations <- 15
+ ```
+ and 
+ ``` bash
+ url <- "enter url here"
  ```
  
