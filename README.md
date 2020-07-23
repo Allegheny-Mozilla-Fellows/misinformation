@@ -16,7 +16,13 @@ Open MisInfoBot.R in RStudio and install and load the following packages:
 - [Spacyr](https://cran.r-project.org/web/packages/spacyr/spacyr.pdf) is an R wrapper to the 'Python' 'spaCy' 'NLP' library, from <http://spacy.io>. It is is a library for      language processing and is used for some text mining  manipulations. It can be installed with the following command:
 
  ``` bash
- install.packages("spacyr)
+ install.packages("spacyr")
+ ```
+ 
+ - [Rvest](https://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/) is a package used for scraping data from html webpages. It can be installed with the following command:
+ 
+  ``` bash
+ install.packages("rvest")
  ```
 
 
