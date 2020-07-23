@@ -6,7 +6,7 @@ A repository for activities to teach misinformation issues
 ##### GitHub link
 git@github.com:Allegheny-Mozilla-Fellows/misinformation.git
 
-## MisInfoBot
+## Using MisInfoBot
 
 You can clone the repository by running the following command:
 
@@ -33,9 +33,16 @@ Open MisInfoBot.R in RStudio and install and load the following packages:
  install.packages("rcorpora")
  ```
  
- - [Stringr](https://stringr.tidyverse.org/) Built on top of stringi and part of the tidyverse<https://www.tidyverse.org/>, stringr provides correct implementations of common string manipulations. It can be installed with the following command:
-  ``` bash
+ - [Stringr](https://stringr.tidyverse.org/) Built on top of stringi and part of the tidyverse, <https://www.tidyverse.org/>, stringr provides correct implementations of common string manipulations. It can be installed with the following command:
+ 
+ ``` bash
  install.packages("stringe")
+ ```
+ 
+ - [Radlibs](https://cran.r-project.org/web/packages/radlibs/radlibs.pdf) A package used to help build your own Madlibs, containing some funny and interesting keywords. It can be installed with the following command:
+ 
+ ``` bash
+ install.packages("radlibs")
  ```
  
  
