@@ -60,5 +60,5 @@ iterations <- 15
  url <- "enter url here"
  ```
  
- `Iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating.
+ `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating.
  
