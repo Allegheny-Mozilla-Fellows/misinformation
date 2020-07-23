@@ -39,10 +39,18 @@ Open MisInfoBot.R in RStudio and install and load the following packages:
  install.packages("stringe")
  ```
  
- - [Radlibs](https://cran.r-project.org/web/packages/radlibs/radlibs.pdf) A package used to help build your own Madlibs, containing some funny and interesting keywords. It can be installed with the following command:
+ - [Radlibs](https://cran.r-project.org/web/packages/radlibs/radlibs.pdf) is a package used to help build your own Madlibs, containing some funny and interesting keywords. It can be installed with the following command:
  
  ``` bash
  install.packages("radlibs")
  ```
  
+ - [QDapDictionaries](https://cran.r-project.org/web/packages/qdapDictionaries/index.html) is a collection of text analysis dictionaries and word lists for use with the 'qdap' package. It can be installed with the following command:
+ 
+  ``` bash
+ install.packages("qdapdictionaries")
+ ```
+  ``` bash
+ install.packages("radlibs")
+ ```
  
