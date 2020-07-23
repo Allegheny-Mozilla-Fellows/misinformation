@@ -70,7 +70,16 @@ iterations <- 15
  demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
  ```
  
- Make sure that when running the script you are not running the code before the `demo_list` block, besides `iterations` as it only pertains to reading New York Times Articles. Then make sure to find the for loop that is not commented out and proceed to comment it all out using command + shit + C. Then find the for loop that is commented out, and remove the comments using the same command. Then 
+ Make sure that when running the script you are not running the code before the `demo_list` block besides `iterations` as it only pertains to reading New York Times Articles. The second portion to edit is the for loop that is not commented out; proceed to comment it all out using command + shit + C. Then find the for loop that is commented out, and remove the comments using the same command. You know which for loop to remove comments from based on the naming convetions; if you want to do a demonstration then you want the loop that contains `demo_list` without comments, if you want to run the code regularly then you use the other loop. Make sure that all the code in between the `demo_list` and the for loop has already been run, then run the for loop. This manipulates the text of the article.
+ 
+ The final portion to edit are the last two lines of code, which write the newly mannipulated article to a txt file called `new_article.txt`:
+ ``` bash
+ paragraph_list <- lapply(demo_list, paste, collapse = " ")
+ write(unlist(paragraph_list), "new_article.txt", sep = "\n")
+ ```
+ 
+ 
+ 
  
  
 
