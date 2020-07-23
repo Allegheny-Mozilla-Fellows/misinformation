@@ -27,7 +27,7 @@ Open MisInfoBot.R in RStudio and install and load the following packages:
  install.packages("rvest")
  ```
 
--[Rcorpora](https://cran.r-project.org/web/packages/rcorpora/index.html) is a collection of small text corpora of interesting data such as names, foods, geography, and parts of speech. It can be installed with the following command:
+ - [Rcorpora](https://cran.r-project.org/web/packages/rcorpora/index.html) is a collection of small text corpora of interesting data such as names, foods, geography, and parts of speech. It can be installed with the following command:
 
  ``` bash
  install.packages("rcorpora")
