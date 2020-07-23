@@ -55,8 +55,10 @@ There are two main variables that are to be changed within the code:
  ``` bash
 iterations <- 15
  ```
- and 
+ and:
  ``` bash
  url <- "enter url here"
  ```
+ 
+ `Iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating.
  
