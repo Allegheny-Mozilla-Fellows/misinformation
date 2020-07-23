@@ -24,7 +24,7 @@ library('qdapDictionaries')
 iterations <- 15
 
 # Specifying the url for desired website to be scraped
-# url <- 'enter url here'
+url <- 'enter url here'
 # url <- 'https://www.nytimes.com/2020/07/15/science/hybrid-sturgeon-paddlefish.html'
 # url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
 
@@ -45,7 +45,7 @@ NYTwebpage %>%
 
 # Creating a demonstration list of sentences to test the for loop on
 # Remove the hashtags and copy and paste if you would like to see the changes on a smaller sample
-
+ 
 # demo_list <- list("Two roads diverged in a yellow wood",
 #                   "And sorry I could not travel both",
 #                   "And be one traveler, long I stood",
@@ -106,8 +106,8 @@ data(preposition)
 prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposition)))
 
 
-# The for loop to use on the demonsration list
-# Remove the hashtags and copy and paste if you would like to see the changes on a smaller sample
+# The for loop to use on the demonstration list
+# Remove the comments and copy and paste if you would like to see the changes on a smaller sample
 
 # for (i in 1:iterations){ # for a specific change in the total amount of changes
 #   LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
