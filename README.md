@@ -62,11 +62,16 @@ iterations <- 15
  
  `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating and MUST be a New York Times article. You can then run the entirety of the code, the newly manipulated article will be written to `new_article.txt` in plain text.
  
+ ### Classroom Demonstration Code
+ 
  You can also run the code on a smaller sample size for demonstration purposes using the code blocks that are commented out. This allows you to easily demonstrate the changes being made in a classroom setting, rather than making 15 changes on a 20 paragraph article and having to read the entire thing. The first portion to remove the comments from is `demo_list`, which  contains a Robert Frost poem called 'The Road Not Taken' by Robert Frost, as well as these lines which handle the maniuplation of the poem:
  ``` bash
  demo_list <- str_split(demo_list, " ")
  demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
  ```
+ 
+ Make sure that when running the script you are not running the code before the `demo_list` block, besides `iterations` as it only pertains to reading New York Times Articles. Then make sure to find the for loop that is not commented out and proceed to comment it all out using command + shit + C. Then find the for loop that is commented out, and remove the comments using the same command. Then 
+ 
  
 
 
