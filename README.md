@@ -60,5 +60,12 @@ iterations <- 15
  url <- "enter url here"
  ```
  
- `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating.
+ `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating. You can then run the entirety of the code, the newly manipulated article will be written to `new_article.txt` in plain text.
+ 
+ You can also run the code on a smaller size for demonstration purposes using the code blocks that are commented out. The first portion to remove the comments from is `demo_list`, which  contains a Robert Frost poem called 'The Road Not Taken' by Robert Frost, as well as these lines which handle the maniuplation of the poem:
+ ``` bash
+ demo_list <- str_split(demo_list, " ")
+ demo_list <- setNames(demo_list, paste0("p", seq_along(demo_list)))
+ ```
+
  
