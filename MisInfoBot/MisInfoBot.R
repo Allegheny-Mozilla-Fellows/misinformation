@@ -1,14 +1,12 @@
 # Some code bits were taken from https://www.youtube.com/watch?v=l37n_HDD1qs
 
-# Installing the rvest and stringr package
-install.packages('rvest')
-install.packages("rcorpora") 
-install.packages("radlibs")
-install.packages("stringr")
-install.packages("spacyr")
-install.packages("qdapDictionaries")
-# install.packages("quanteda")
-# install.packages("rlist")
+# Installing the necesary packages
+# install.packages('rvest')
+# install.packages("rcorpora") 
+# install.packages("radlibs")
+# install.packages("stringr")
+# install.packages("spacyr")
+# install.packages("qdapDictionaries")
 
 
 # Loading all used packages
@@ -24,7 +22,7 @@ library('qdapDictionaries')
 iterations <- 15
 
 # Specifying the url for desired website to be scraped
-url <- 'enter url here'
+url <- 'enter NYT url here'
 # url <- 'https://www.nytimes.com/2020/07/15/science/hybrid-sturgeon-paddlefish.html'
 # url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
 
@@ -203,6 +201,7 @@ for (i in 1:iterations){ # for a specific change in the total amount of changes
 
 # Remove the whitespace in between the words
 paragraph_list <- lapply(psw_list, paste, collapse = " ")
+
 
 # Write the new paragraphs to a txt file
 write(unlist(paragraph_list), "new_article.txt", sep = "\n")
