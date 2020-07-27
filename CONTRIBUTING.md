@@ -23,7 +23,7 @@ Always write a clear log message for your commits. One-line messages are fine fo
 
 Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of Misinformation will generally not be accepted.
 
-## Do you want to contribute to the Rails documentation?
+## Do you want to contribute to the MisInfoBot documentation?
 
 You can help improve the Misinformation guides by making them more coherent, consistent, or readable, adding missing information, correcting factual errors, fixing typos, or bringing them up to date with the latest edge Rails.
 
