@@ -26,6 +26,19 @@ url <- 'enter NYT url here'
 # url <- 'https://www.nytimes.com/2020/07/15/science/hybrid-sturgeon-paddlefish.html'
 # url <- 'https://www.nytimes.com/2020/06/15/nyregion/nyc-affordable-housing-lottery.html'
 
+readNYTLink <- function(url){
+  NYTwebpage <- read_html(url)
+  NYTwebpage %>%
+    html_nodes(".css-53u6y8 p") %>%
+    html_text() -> paragraphs
+  NYTwebpage %>%
+    html_nodes(".css-53u6y8 p") %>%
+    html_text() %>%
+    str_split(' ') -> paragraphs_separated_by_word
+}
+
+
+
 # # Reading the HTML code from the website
 NYTwebpage <- read_html(url)
 
