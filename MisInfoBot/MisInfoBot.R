@@ -25,6 +25,8 @@ iterations <- 15
 url <- 'enter NYT url here'
 url <- 'https://www.nytimes.com/2020/07/15/science/hybrid-sturgeon-paddlefish.html'
 
+# need to test this function
+# test the format of the output? whether there is output or not?
 readNYTLinkToParagraphs <- function(url){
   NYTwebpage <- read_html(url)
   NYTwebpage %>%
@@ -33,6 +35,8 @@ readNYTLinkToParagraphs <- function(url){
   return(paragraphs)
 }
 
+# need to test this function
+# test the format of the output? whether there is output or not?
 readNYTLinkToPSW <- function(url){
   NYTwebpage <- read_html(url)
   NYTwebpage %>%
