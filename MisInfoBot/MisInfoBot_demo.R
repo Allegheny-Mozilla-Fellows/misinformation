@@ -15,7 +15,7 @@ library('spacyr')
 library('rcorpora')
 library('radlibs')
 library('qdapDictionaries')
-# making sure mit git is fully working
+
 
 # Declare the 'iterations' and 'demo_list' variables, then copy and paste the rest of the code in the console and run it.
 iterations <- 15
