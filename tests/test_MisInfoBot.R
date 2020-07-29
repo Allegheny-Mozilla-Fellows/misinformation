@@ -3,7 +3,7 @@
 source("/Users/declancasey/Desktop/Summer2020/misinformation/MisInfoBot/MisInfoBot.R", chdir = TRUE)
 library('testthat')
 
-url <- 'https://www.nytimes.com/2020/07/15/science/hybrid-sturgeon-paddlefish.html'
+
 
 # pretty sure this works
 test_that("paragraphs_list contains a nested list", {
@@ -17,4 +17,6 @@ test_that("psw_list contains a nested list", {
   expect_output(str(psw_list), "List of")
 })
 
-a <- list(1:10, letters)
+test_that("url contains an New York Times url",{
+  expect_match(url, "https://www.nytimes.com/")
+})
