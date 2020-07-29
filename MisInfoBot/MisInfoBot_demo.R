@@ -1,17 +1,21 @@
 # Some code bits were taken from https://www.youtube.com/watch?v=l37n_HDD1qs
+# make sure to have miniconda installed: https://docs.conda.io/en/latest/miniconda.html
 
 # Installing the necesary packages
+# install.packages("devtools")
+# devtools::install_github("quanteda/spacyr", build_vignettes = FALSE)
 # install.packages('rvest')
 # install.packages("rcorpora")
 # install.packages("radlibs")
 # install.packages("stringr")
-# install.packages("spacyr")
+# install.packages("spacyr"), # other instructions here: https://cran.r-project.org/web/packages/spacyr/readme/README.html
 # install.packages("qdapDictionaries")
 
 # Loading all used packages
 library('rvest')
 library('stringr')
 library('spacyr')
+spacy_install()
 library('rcorpora')
 library('radlibs')
 library('qdapDictionaries')
