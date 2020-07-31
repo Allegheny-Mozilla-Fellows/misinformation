@@ -10,5 +10,3 @@ test_that("iterations is a number", {
 test_that("demo_list contains a list", {
   expect_output(str(demo_list), "List")
 })
-
-# test push to make sure there's no merge conflict
