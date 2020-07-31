@@ -76,7 +76,7 @@ iterations <- 15
 
 `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating and MUST be a New York Times article. You can then run the entirety of the code, the newly manipulated article will be written to `new_article.txt` and the original, unedited article will be written to `old_article.txt`. You can choose any amount of changes, whether 5 changes or 500, but the more changes that are to be made the longer it will take the code to run; if you make too many changes, for example over 1,000, RStudio may crash and you would have to restart, so try to avoid making too many.
 
-There are then two functions that need to be declared, the first being `readNYTLinkToParagraphs`, which reads and scrapes text from the chosen New York Times Article in one specific format:
+There are two functions that need to be declared, the first being `readNYTLinkToParagraphs`, which reads and scrapes text from the chosen New York Times Article in one specific format:
 
 ```
 readNYTLinkToParagraphs <- function(url){
@@ -102,16 +102,15 @@ readNYTLinkToPSW <- function(url){
   return(paragraphs_separated_by_word)
 ```
 
-If you have declared the necessary variables and functions and would like to see the results, copy the rest of the code, paste it in the console, run it, and then compare the two articles. If you are a student and are ready to start doing some analysis, head down to the "Student Discussion and Reflection Questions" section.
+If you have declared the necessary variables and functions and would like to see the results, then copy and paste the rest of the code and run it in the console. You may then compare the two articles. If you are a student and are ready to start doing some analysis, head down to the "Student Discussion and Reflection Questions" section.
 
 ### Classroom Demonstration Code
 
 You can also run the code on a smaller sample size for demonstration purposes using the MisInfoBot_demo.R file found in the MisInfoBot directory. This allows you to easily demonstrate the changes being made in a classroom setting, rather than making 15 changes on a 20 paragraph article and having to read the entire thing.
 
-The only two bits of code you can manually change are `iterations`, which serves the same function as it does in MisInfoBot, and `demo_list`, which replaces the `url` variable from MisInfoBot and currently holds 16 line Robert Frost poem. You may change what `demo_list` holds but make sure it is in list structure, where each line is separated by a comma and surrounded by quotations.
+The only two bits of code you can manually change are `iterations`, which serves the same function as it does in MisInfoBot, and `demo_list`, which replaces the `url` variable from MisInfoBot and currently holds a 16 line Robert Frost poem, "The ROad Not Taken". You may change what `demo_list` holds but make sure it is in the correct list structure, where each line is surrounded by quotations and separated by a comma.
 
-The final last two lines write the original and manipulated articles to .txt files, each respectively named `old_article_demo` and `new_article_demo`. Place both side by side and you'll notice how much clearer the changes are.
-
+The final last two lines of code write the original and manipulated articles to .txt files, each respectively named `old_article_demo` and `new_article_demo`. Place both side by side and you'll notice how much clearer the changes are.
 
 ## Student Discussion and Reflection Questions
 
