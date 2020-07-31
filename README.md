@@ -8,9 +8,9 @@ git@github.com:Allegheny-Mozilla-Fellows/misinformation.git
 
 ## MisInfoBot Tutorial and it's Real-World Application
 
-The MisInfoBot is an R script that reads in a New York Times Article and randomly changes a certain amount of words based on the user's input. It will write the newly changed article to a .txt file called 'new_article.txt'. The script essentially plays a game of telephone with itself, each 'iteration' acting as a news media outlet passing information to the next new media outlet, like CNN or Fox News coming out with a story before an instagram account hears about the story and creates a post about it.
-
 With the reliance on social media as a source of news and for nearly all information we consume, it has become very easy for misinformation to spread. In fact, misinformation spreads just as easily as correct information and telling the difference between the two is no longer straightforward. The source-checking and fact-checking duties have become the job of the reader rather than the writer, whether the information has already been fact-checked or not, and "fake news" has become the new normal. The purpose of this lab is to demonstrate how misinformation can spread computationally and how information becomes misinformation.
+
+The MisInfoBot is an R script that reads in a New York Times Article and randomly changes a certain amount of words based on the user's input. It will write the newly changed article to a .txt file called 'new_article.txt'. The script essentially plays a game of telephone with itself, each 'iteration' acting as a news media outlet passing information to the next news media outlet, like CNN or Fox News coming out with a story before an instagram account hears about the story and creates a post about it.
 
 If the CNN or Fox News story contains incorrect information, then the instagram account will likely publish that incorrect information along with the correct information without fact-checking it. How are they to know the story is incorrect? After all, the instagram account is not legally obligated to make sure they're publishing pinpoint accurate news, they're just looking for likes and clicks. This cycle can continue until the message of the story has been completely distorted, and the misinformation can completely permeate the news sphere, hence, the game of telephone.
 
@@ -23,10 +23,14 @@ git clone git@github.com:Allegheny-Mozilla-Fellows/misinformation.git
 ```
 
 Open MisInfoBot.R in RStudio and install and load the following packages:
-- [Spacyr](https://cran.r-project.org/web/packages/spacyr/spacyr.pdf) is an R wrapper to the 'Python' 'spaCy' 'NLP' library, from <http://spacy.io>. It is is a library for      language processing and is used for some text mining  manipulations. It can be installed with the following command:
+
+- [Devtools](https://www.r-project.org/nosvn/pandoc/devtools.html) is a package that provides many R functions that simplify many common tasks. Follow the steps in the link provided to make sure you have the latest version of devtools installed.
+
+- [Spacyr](https://cran.r-project.org/web/packages/spacyr/spacyr.pdf) is an R wrapper to the 'Python' 'spaCy' 'NLP' library, from <http://spacy.io>. It is is a library for language processing and is used for some text mining  manipulations. Before installing Spacyr, make sure to have the miniconda installed(https://docs.conda.io/en/latest/miniconda.html). It can be installed with the following commands:
 
  ``` bash
  install.packages("spacyr")
+ spacy_install() # only use this command once, otherwise it drastically slows down performance
  ```
 
 - [Rvest](https://blog.rstudio.com/2014/11/24/rvest-easy-web-scraping-with-r/) is a package used for scraping data from html webpages. It can be installed with the following command:

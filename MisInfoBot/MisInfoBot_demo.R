@@ -9,13 +9,13 @@
 # install.packages("radlibs")
 # install.packages("stringr")
 # install.packages("spacyr"), # other instructions here: https://cran.r-project.org/web/packages/spacyr/readme/README.html
+# spacy_install() # only do this once
 # install.packages("qdapDictionaries")
 
 # Loading all used packages
 library('rvest')
 library('stringr')
 library('spacyr')
-spacy_install()
 library('rcorpora')
 library('radlibs')
 library('qdapDictionaries')
