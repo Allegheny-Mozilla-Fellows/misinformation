@@ -74,6 +74,7 @@ verbs_past <- setNames(as.list(verbs$past), paste0("v", seq_along(verbs$past)))
 data(preposition)
 prepositions <- setNames(as.list(preposition), paste0("prep", seq_along(preposition)))
     # The for loop to use on the demonstration list
+
 for (i in 1:iterations){ # for a specific change in the total amount of changes
   LIST_OF_UNACCEPTABLE_POS <- list("AUX", "CONJ", "DET", "INTJ", "NUM", "PART", "PROPN", "PUNCT", "SCONJ", "SYM",
                                    "X",  "CCONJ", "SCONJ")
@@ -115,7 +116,6 @@ for (i in 1:iterations){ # for a specific change in the total amount of changes
     } else if (end_of_verb == "FALSE"){
       sample(verbs_present, 1) -> replacement
       as.character(replacement) -> replacement
-      demo_list[[n]][j] <- replacement
     }
   }
 }

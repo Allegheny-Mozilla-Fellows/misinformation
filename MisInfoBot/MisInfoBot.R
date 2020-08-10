@@ -5,7 +5,7 @@
 # install.packages("devtools")
 # devtools::install_github("quanteda/spacyr", build_vignettes = FALSE)
 # install.packages('rvest')
-# install.packages("rcorpora") 
+# install.packages("rcorpora")
 # install.packages("radlibs")
 # install.packages("stringr")
 # install.packages("spacyr") # other instructions here: https://cran.r-project.org/web/packages/spacyr/readme/README.html
