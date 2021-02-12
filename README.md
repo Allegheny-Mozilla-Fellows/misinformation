@@ -118,23 +118,20 @@ Before running the code, keep in mind the real-world application of the code and
 
 1. How many times is a new story likely to be recycled? What type of information is likely to be changed, whether through honest mistakes from reporters or intentionally?
 
-`TODO`
 
 Now, make sure you DO NOT read the article that your professor has given to you before making changes to it. After declaring the variables, declare two functions that follow; these functions handle the parsing of the article. You can now copy and paste the rest of the code and run it in the console. This may take some time, depending on how fast your computer is as well as how many changes are being made. Read the newly mutated article and answer the second question in blue.
 
 2. Read the newly mutated article (the one given to you) and answer the following questions in a lengthy paragraph: What is the message of the new article? How often are you left confused by words, sentences, or even an entire paragraph? Now read the original article and answer the exact same questions for both the mutated and original article, as well as generally comparing and contrasting them:
 
-`TODO`
 
 Now that you've done some analysis on an article given to you, you're going to do some analysis on a New York Times article of your choosing. Make sure the article is about a topic you are very familiar with, whether a sports article about LeBron James' high school career, a tech article about the specs for the new MacBook, or an article on the newest Quentin Tarantino movie. However, do not yet read this article. You are going to follow the same process as you did for the article given to you. You will first choose the amount of changes you want to make using the 'iterations' variable, but consider the length of the article this time; how many changes would make the mutations far too obvious? For example, if the article is only five paragraphs long then 100 changes might be too obvious. Since it is an article about a topic you already know well, try and trick yourself. Maybe start with a low number of changes, say 2-6 for each paragraph (meaning anywhere from 10 to 35 changes in a 5 paragraph article) and working up from there. Now read the newly mutated article and answer the third question in blue. Then, read the original article and answer the fourth question in blue.
 
 3. Read the newly mutated article (the one you gave chosen) and answer the following questions in a lengthy paragraph: How false does this article seem to you, given that you have knowledge of it's topic already? What kinds of changes are obvious to you? What is the message of this new article, and how does that message differ from what you were expecting it to be?
 
-`TODO`
+
 
 4. Read the original article and pay careful attention to the differences between it and the mutated article. Then answer the following questions in a lengthy paragraph: What major changes, if there were any, immediately stuck out to you and what kinds of changes were they? Would a reader with zero background knowledge notice the changes that were made? Why or why not? What are the ethical implications of the changes made in the article?
 
-`TODO`
 
 
 `iterations` decides how many changes are to be made in the article, and `url` is the article that the MisInfoBot is manipulating and MUST be a New York Times article. You can then run the entirety of the code, the newly manipulated article will be written to `new_article.txt` and the original, unedited article will be written to `old_article.txt`. You can now begin comparing the new article with the old article side by side, .txt file next to New York Times article and begin thinking about the 'Questions in Blue' and how to help students consider these questions.
